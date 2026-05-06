@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PrototypeApplication<prototype>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.tinthanh.prototype.PrototypeApplication",
+            "projectName": "prototype",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
