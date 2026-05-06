@@ -1,42 +1,63 @@
 package com.tinthanh.prototype.model;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "thietbi_lylich")
+@Table(name = "ThietBi_LyLich")
 public class ThietBiLyLich {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID idThietBi;
+    @Column(name = "ID_ThietBi", length = 36)
+    private UUID id;
 
+    @Column(name = "TenThietBi", nullable = false)
     private String tenThietBi;
 
-    @Column(unique = true)
+    @Column(name = "MaSoQuanLy", nullable = false, unique = true)
     private String maSoQuanLy;
 
-    @Column(unique = true)
+    @Column(name = "ModelType")
+    private String modelType;
+
+    @Column(name = "SoSerial", nullable = false, unique = true)
     private String soSerial;
 
-    private String modelType;
+    @Column(name = "NhaSanXuat")
     private String nhaSanXuat;
+
+    @Column(name = "NamSanXuat")
     private Integer namSanXuat;
+
+    // Đã đổi sang LocalDate và xóa bỏ @Temporal
+    @Column(name = "NgayTiepNhan")
+    private LocalDate ngayTiepNhan;
+
+    // Đã đổi sang LocalDate và xóa bỏ @Temporal
+    @Column(name = "NgayDuaVaoSuDung")
+    private LocalDate ngayDuaVaoSuDung;
+
+    @Column(name = "DacDiemKyThuat", columnDefinition = "TEXT")
+    private String dacDiemKyThuat;
+
+    @Column(name = "TrangThaiVanHanh", length = 50)
     private String trangThaiVanHanh;
 
-    // Getters and Setters
-    public UUID getIdThietBi() {
-        return idThietBi;
+    public ThietBiLyLich() {
+        this.id = UUID.randomUUID();
     }
 
-    public void setIdThietBi(UUID idThietBi) {
-        this.idThietBi = idThietBi;
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getTenThietBi() {
@@ -55,20 +76,20 @@ public class ThietBiLyLich {
         this.maSoQuanLy = maSoQuanLy;
     }
 
-    public String getSoSerial() {
-        return soSerial;
-    }
-
-    public void setSoSerial(String soSerial) {
-        this.soSerial = soSerial;
-    }
-
     public String getModelType() {
         return modelType;
     }
 
     public void setModelType(String modelType) {
         this.modelType = modelType;
+    }
+
+    public String getSoSerial() {
+        return soSerial;
+    }
+
+    public void setSoSerial(String soSerial) {
+        this.soSerial = soSerial;
     }
 
     public String getNhaSanXuat() {
@@ -85,6 +106,30 @@ public class ThietBiLyLich {
 
     public void setNamSanXuat(Integer namSanXuat) {
         this.namSanXuat = namSanXuat;
+    }
+
+    public LocalDate getNgayTiepNhan() {
+        return ngayTiepNhan;
+    }
+
+    public void setNgayTiepNhan(LocalDate ngayTiepNhan) {
+        this.ngayTiepNhan = ngayTiepNhan;
+    }
+
+    public LocalDate getNgayDuaVaoSuDung() {
+        return ngayDuaVaoSuDung;
+    }
+
+    public void setNgayDuaVaoSuDung(LocalDate ngayDuaVaoSuDung) {
+        this.ngayDuaVaoSuDung = ngayDuaVaoSuDung;
+    }
+
+    public String getDacDiemKyThuat() {
+        return dacDiemKyThuat;
+    }
+
+    public void setDacDiemKyThuat(String dacDiemKyThuat) {
+        this.dacDiemKyThuat = dacDiemKyThuat;
     }
 
     public String getTrangThaiVanHanh() {
