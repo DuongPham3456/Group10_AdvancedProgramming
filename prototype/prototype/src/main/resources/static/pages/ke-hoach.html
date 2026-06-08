@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế hoạch bảo trì</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/yeu-cau.html" data-page="yeu-cau">Yêu cầu</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach" class="active">Kế hoạch</a>
+                <a href="/pages/bao-cao.html" data-page="bao-cao">Báo cáo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Kế hoạch bảo trì</div>
+            <h1>Tạo/duyệt kế hoạch bảo trì</h1>
+            <p>Lập kế hoạch bảo trì định kỳ và theo dõi tiến độ thực hiện</p>
+        </div>
+
+        <div class="card">
+            <h2>Tạo kế hoạch mới</h2>
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Tên kế hoạch</label><input type="text" id="tenKeHoach"></div>
+                <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Loại bảo trì</label>
+                    <select id="loaiBaoTri"><option>Định kỳ</option><option>Sửa chữa</option><option>Kiểm tra</option></select>
+                </div>
+                <div class="form-group"><label>Ngày bắt đầu</label><input type="date" id="ngayBatDau"></div>
+                <div class="form-group"><label>Ngày kết thúc</label><input type="date" id="ngayKetThuc"></div>
+                <div class="form-group"><label>Chu kỳ (ngày)</label><input type="number" id="chuKyNgay"></div>
+                <div class="form-group" style="grid-column: span 2;"><label>Nội dung</label><textarea id="noiDung"></textarea></div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addKeHoach()">Lưu kế hoạch</button></div>
+        </div>
+
+        <div class="card">
+            <h2>Danh sách kế hoạch</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Tên KH</th><th>Thiết bị</th><th>Loại</th><th>Bắt đầu</th>
+                        <th>Kết thúc</th><th>Chu kỳ</th><th>Trạng thái</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function load() {
+            const data = await apiGet(API.keHoach);
+            document.getElementById('tableBody').innerHTML = data.map(k =>
+                `<tr>
+                    <td>${k.tenKeHoach}</td><td>${k.tenThietBi||k.maThietBi}</td>
+                    <td>${k.loaiBaoTri||''}</td>
+                    <td>${formatDate(k.ngayBatDau)}</td><td>${formatDate(k.ngayKetThuc)}</td>
+                    <td>${k.chuKyNgay||''} ngày</td>
+                    <td>${badgeHtml(k.trangThai)}</td>
+                    <td class="actions">
+                        ${k.trangThai === 'Chờ duyệt' ? `<button class="btn btn-success btn-sm" onclick="duyet('${k.id}')">Duyệt</button>` : ''}
+                        <button class="btn btn-danger btn-sm" onclick="xoa('${k.id}')">Xóa</button>
+                    </td>
+                </tr>`
+            ).join('');
+        }
+
+        async function addKeHoach() {
+            await apiPost(API.keHoach, {
+                tenKeHoach: getField('tenKeHoach'), maThietBi: getField('maThietBi'),
+                tenThietBi: getField('tenThietBi'), loaiBaoTri: document.getElementById('loaiBaoTri').value,
+                ngayBatDau: getField('ngayBatDau') || null, ngayKetThuc: getField('ngayKetThuc') || null,
+                chuKyNgay: getNumberField('chuKyNgay'), noiDung: getField('noiDung')
+            });
+            clearFields(['tenKeHoach','maThietBi','tenThietBi','ngayBatDau','ngayKetThuc','chuKyNgay','noiDung']);
+            load();
+        }
+
+        async function duyet(id) { await apiPut(`${API.keHoach}/${id}/duyet`, {}); load(); }
+        async function xoa(id) { if (confirm('Xóa kế hoạch?')) { await apiDelete(`${API.keHoach}/${id}`); load(); } }
+        load();
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/yeu-cau.html" data-page="yeu-cau">Yêu cầu</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Kế hoạch</a>
+                <a href="/pages/bao-cao.html" data-page="bao-cao" class="active">Báo cáo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Báo cáo</div>
+            <h1>Báo cáo theo dõi bảo trì</h1>
+            <p>Tổng hợp dữ liệu hỗ trợ theo dõi bảo trì theo thời gian</p>
+        </div>
+
+        <div class="stats-row" id="statsRow"></div>
+
+        <div class="card">
+            <h2>Trạng thái thiết bị</h2>
+            <div class="chart-bar" id="statusChart"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="card">
+                <h2>Tổng quan hệ thống</h2>
+                <div id="overviewList"></div>
+            </div>
+            <div class="card">
+                <h2>Liên kết nhanh</h2>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="/pages/thiet-bi.html" class="btn btn-secondary">Quản lý thiết bị</a>
+                    <a href="/pages/yeu-cau.html" class="btn btn-secondary">Yêu cầu bảo trì</a>
+                    <a href="/pages/ke-hoach.html" class="btn btn-secondary">Kế hoạch bảo trì</a>
+                    <a href="/pages/chi-phi.html" class="btn btn-secondary">Chi phí bảo trì</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function load() {
+            const s = await apiGet('/api/baocao/tonghop');
+            document.getElementById('statsRow').innerHTML = `
+                <div class="stat-card"><div class="stat-value">${s.tongThietBi}</div><div class="stat-label">Tổng thiết bị</div></div>
+                <div class="stat-card"><div class="stat-value">${s.tongYeuCau}</div><div class="stat-label">Yêu cầu bảo trì</div></div>
+                <div class="stat-card"><div class="stat-value">${s.tongKeHoach}</div><div class="stat-label">Kế hoạch</div></div>
+                <div class="stat-card"><div class="stat-value">${s.tongCongViec}</div><div class="stat-label">Công việc</div></div>`;
+
+            const maxVal = Math.max(s.thietBiDangHoatDong, s.thietBiBaoDuong, s.thietBiSuCo, 1);
+            document.getElementById('statusChart').innerHTML = [
+                { label: 'Hoạt động', val: s.thietBiDangHoatDong },
+                { label: 'Bảo dưỡng', val: s.thietBiBaoDuong },
+                { label: 'Sự cố', val: s.thietBiSuCo },
+                { label: 'YC chờ duyệt', val: s.yeuCauChoDuyet }
+            ].map(item =>
+                `<div class="chart-bar-item">
+                    <div class="chart-bar-fill" style="height:${(item.val/maxVal)*140}px"></div>
+                    <div class="chart-bar-label">${item.label}<br><strong>${item.val}</strong></div>
+                </div>`
+            ).join('');
+
+            document.getElementById('overviewList').innerHTML = `
+                <p><strong>Tổng chi phí bảo trì:</strong> ${formatCurrency(s.tongChiPhi)}</p>
+                <p><strong>Thiết bị đang hoạt động:</strong> ${s.thietBiDangHoatDong} / ${s.tongThietBi}</p>
+                <p><strong>Thiết bị đang bảo dưỡng:</strong> ${s.thietBiBaoDuong}</p>
+                <p><strong>Thiết bị sự cố:</strong> ${s.thietBiSuCo}</p>
+                <p><strong>Yêu cầu chờ duyệt:</strong> ${s.yeuCauChoDuyet}</p>`;
+        }
+        load();
+    </script>
+</body>
+</html>
