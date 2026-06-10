@@ -30,7 +30,10 @@
         </div>
 
         <div class="card">
-            <h2>Ghi nhận thông số mới</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h2>Ghi nhận thông số mới</h2>
+                <div style="display:flex;align-items:center;gap:8px;"><button class="btn btn-secondary" onclick="exportSoTheoDoiPdf()">Xuất PDF sổ theo dõi</button><span class="small-muted">BM.BT.01.05</span></div>
+            </div>
             <div class="form-grid cols-3">
                 <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
                 <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
@@ -71,7 +74,7 @@
                 `<tr>
                     <td>${tb.tenThietBi}</td><td>${tb.maSoQuanLy}</td><td>${tb.modelType||''}</td>
                     <td>${badgeHtml(tb.trangThaiVanHanh)}</td>
-                    <td><select onchange="updateStatus('${tb.id}', this.value)">
+                    <td><select onchange="updateStatus('${tb.idThietBi}', this.value)">
                         <option value="Đang hoạt động" ${tb.trangThaiVanHanh==='Đang hoạt động'?'selected':''}>Đang hoạt động</option>
                         <option value="Bảo dưỡng" ${tb.trangThaiVanHanh==='Bảo dưỡng'?'selected':''}>Bảo dưỡng</option>
                         <option value="Sự cố" ${tb.trangThaiVanHanh==='Sự cố'?'selected':''}>Sự cố</option>
@@ -102,6 +105,10 @@
             tb.trangThaiVanHanh = status;
             await apiPut(`${API.thietBi}/${id}`, tb);
             load();
+        }
+
+        function exportSoTheoDoiPdf() {
+            openPdf('/api/pdf/so-theo-doi');
         }
 
         load();

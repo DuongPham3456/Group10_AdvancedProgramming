@@ -30,7 +30,10 @@
         </div>
 
         <div class="card">
-            <h2>Tạo kế hoạch mới</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h2>Tạo kế hoạch mới</h2>
+                <div style="display:flex;align-items:center;gap:8px;"><button class="btn btn-secondary" onclick="exportKeHoachPdf()">Xuất PDF kế hoạch</button><span class="small-muted">BM.BT.01.03</span></div>
+            </div>
             <div class="form-grid cols-3">
                 <div class="form-group"><label>Tên kế hoạch</label><input type="text" id="tenKeHoach"></div>
                 <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
@@ -92,6 +95,11 @@
 
         async function duyet(id) { await apiPut(`${API.keHoach}/${id}/duyet`, {}); load(); }
         async function xoa(id) { if (confirm('Xóa kế hoạch?')) { await apiDelete(`${API.keHoach}/${id}`); load(); } }
+
+        function exportKeHoachPdf() {
+            openPdf('/api/pdf/kehoach');
+        }
+
         load();
     </script>
 </body>

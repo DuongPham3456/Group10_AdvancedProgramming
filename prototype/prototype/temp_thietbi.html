@@ -32,10 +32,10 @@
         <div class="card">
             <div class="toolbar">
                 <input id="search" class="search-input" type="text" placeholder="Tìm kiếm theo tên hoặc mã số">
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <button class="btn btn-secondary" onclick="load()">Hiển thị tất cả</button>
-                    <div style="display:flex;align-items:center;gap:8px;"><button class="btn btn-secondary" onclick="exportDanhMucThietBi()">Xuất PDF danh mục</button><span class="small-muted">BM.BT.01.02</span></div>
-                    <div style="display:flex;align-items:center;gap:8px;"><button class="btn btn-secondary" onclick="exportLyLichPrompt()">Xuất PDF lý lịch</button><span class="small-muted">BM.BT.01.01</span></div>
+                    <button class="btn btn-secondary" onclick="exportDanhMucThietBi()">Xuất PDF danh mục</button>
+                    <button class="btn btn-secondary" onclick="exportLyLichPrompt()">Xuất PDF lý lịch</button>
                     <button class="btn btn-primary" onclick="searchThietBi()">Tìm kiếm</button>
                 </div>
             </div>
@@ -133,7 +133,6 @@
                     <td>${badgeHtml(tb.trangThaiVanHanh)}</td>
                     <td class="actions">
                         <button class="btn btn-secondary btn-sm" onclick="exportThietBiLyLich('${tb.idThietBi}')">PDF</button>
-                        <span class="small-muted" style="margin-left:6px;">BM.BT.01.01</span>
                         <button class="btn btn-secondary btn-sm" onclick="editThietBi('${tb.idThietBi}')">Sửa</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteThietBi('${tb.idThietBi}')">Xóa</button>
                     </td>

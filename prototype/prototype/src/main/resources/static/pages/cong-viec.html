@@ -30,7 +30,10 @@
         </div>
 
         <div class="card">
-            <h2>Thêm công việc mới</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h2>Thêm công việc mới</h2>
+                <div style="display:flex;align-items:center;gap:8px;"><button class="btn btn-secondary" onclick="exportBienBanPdf()">Xuất PDF nghiệm thu</button><span class="small-muted">BM.BT.01.04</span></div>
+            </div>
             <div class="form-grid cols-3">
                 <div class="form-group"><label>Tên công việc</label><input type="text" id="tenCongViec"></div>
                 <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
@@ -101,6 +104,11 @@
         }
 
         async function xoa(id) { if (confirm('Xóa công việc?')) { await apiDelete(`${API.congViec}/${id}`); load(); } }
+
+        function exportBienBanPdf() {
+            openPdf('/api/pdf/nghiemthu');
+        }
+
         load();
     </script>
 </body>

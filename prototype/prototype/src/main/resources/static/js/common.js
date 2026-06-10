@@ -95,3 +95,7 @@ function clearFields(ids) {
         if (el) el.value = '';
     });
 }
+
+function openPdf(url) {
+    window.open(url, '_blank');
+}
