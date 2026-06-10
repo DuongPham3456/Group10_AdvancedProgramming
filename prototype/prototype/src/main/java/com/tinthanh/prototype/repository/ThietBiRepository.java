@@ -18,6 +18,10 @@ public interface ThietBiRepository extends JpaRepository<ThietBiLyLich, UUID> {
               OR LOWER(t.soSerial) LIKE LOWER(CONCAT('%', :keyword, '%'))
               OR LOWER(t.modelType) LIKE LOWER(CONCAT('%', :keyword, '%'))
               OR LOWER(t.nhaSanXuat) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              OR LOWER(t.dacDiem) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              OR LOWER(t.phuTungKemTheo) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              OR LOWER(t.taiLieuKemTheo) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              OR LOWER(t.tinhTrangTiepNhan) LIKE LOWER(CONCAT('%', :keyword, '%'))
            """)
     List<ThietBiLyLich> findByKeyword(@Param("keyword") String keyword);
 }

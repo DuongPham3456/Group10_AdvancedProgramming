@@ -58,6 +58,12 @@ public class ThietBiController {
         thietBi.setModelType(thietBiDetails.getModelType());
         thietBi.setNhaSanXuat(thietBiDetails.getNhaSanXuat());
         thietBi.setNamSanXuat(thietBiDetails.getNamSanXuat());
+        thietBi.setDacDiem(thietBiDetails.getDacDiem());
+        thietBi.setNgayTiepNhan(thietBiDetails.getNgayTiepNhan());
+        thietBi.setNgayDuaVaoSuDung(thietBiDetails.getNgayDuaVaoSuDung());
+        thietBi.setPhuTungKemTheo(thietBiDetails.getPhuTungKemTheo());
+        thietBi.setTaiLieuKemTheo(thietBiDetails.getTaiLieuKemTheo());
+        thietBi.setTinhTrangTiepNhan(thietBiDetails.getTinhTrangTiepNhan());
         thietBi.setTrangThaiVanHanh(thietBiDetails.getTrangThaiVanHanh());
         return repository.save(thietBi);
     }

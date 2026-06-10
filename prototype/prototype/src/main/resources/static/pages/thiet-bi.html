@@ -50,6 +50,12 @@
                 <div class="form-group"><label>Model</label><input type="text" id="model"></div>
                 <div class="form-group"><label>Nhà sản xuất</label><input type="text" id="nhaSanXuat"></div>
                 <div class="form-group"><label>Năm sản xuất</label><input type="number" id="namSanXuat"></div>
+                <div class="form-group"><label>Đặc điểm máy móc, thiết bị</label><textarea id="dacDiem"></textarea></div>
+                <div class="form-group"><label>Ngày tiếp nhận</label><input type="date" id="ngayTiepNhan"></div>
+                <div class="form-group"><label>Ngày đưa vào sử dụng</label><input type="date" id="ngayDuaVaoSuDung"></div>
+                <div class="form-group"><label>Phụ tùng kèm theo (nếu có)</label><input type="text" id="phuTung"></div>
+                <div class="form-group"><label>Tài liệu kèm theo (nếu có)</label><input type="text" id="taiLieu"></div>
+                <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="tinhTrangTiepNhan" placeholder="Ví dụ: 95% hoạt động"></div>
                 <div class="form-group"><label>Trạng thái</label>
                     <select id="trangThai">
                         <option value="Đang hoạt động">Đang hoạt động</option>
@@ -71,6 +77,12 @@
                 <div class="form-group"><label>Model</label><input type="text" id="editModel"></div>
                 <div class="form-group"><label>Nhà sản xuất</label><input type="text" id="editNhaSanXuat"></div>
                 <div class="form-group"><label>Năm sản xuất</label><input type="number" id="editNamSanXuat"></div>
+                <div class="form-group"><label>Đặc điểm máy móc, thiết bị</label><textarea id="editDacDiem"></textarea></div>
+                <div class="form-group"><label>Ngày tiếp nhận</label><input type="date" id="editNgayTiepNhan"></div>
+                <div class="form-group"><label>Ngày đưa vào sử dụng</label><input type="date" id="editNgayDuaVaoSuDung"></div>
+                <div class="form-group"><label>Phụ tùng kèm theo (nếu có)</label><input type="text" id="editPhuTung"></div>
+                <div class="form-group"><label>Tài liệu kèm theo (nếu có)</label><input type="text" id="editTaiLieu"></div>
+                <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="editTinhTrangTiepNhan"></div>
                 <div class="form-group"><label>Trạng thái</label>
                     <select id="editTrangThai">
                         <option value="Đang hoạt động">Đang hoạt động</option>
@@ -153,9 +165,12 @@
                 tenThietBi: getField('ten'), maSoQuanLy: getField('ma'),
                 soSerial: getField('serial'), modelType: getField('model'),
                 nhaSanXuat: getField('nhaSanXuat'), namSanXuat: getNumberField('namSanXuat'),
+                dacDiem: getField('dacDiem'), ngayTiepNhan: getField('ngayTiepNhan'),
+                ngayDuaVaoSuDung: getField('ngayDuaVaoSuDung'), phuTungKemTheo: getField('phuTung'),
+                taiLieuKemTheo: getField('taiLieu'), tinhTrangTiepNhan: getField('tinhTrangTiepNhan'),
                 trangThaiVanHanh: document.getElementById('trangThai').value
             });
-            clearFields(['ten','ma','serial','model','nhaSanXuat','namSanXuat']);
+            clearFields(['ten','ma','serial','model','nhaSanXuat','namSanXuat','dacDiem','ngayTiepNhan','ngayDuaVaoSuDung','phuTung','taiLieu','tinhTrangTiepNhan']);
             load();
         }
 
@@ -168,6 +183,12 @@
             document.getElementById('editModel').value = tb.modelType || '';
             document.getElementById('editNhaSanXuat').value = tb.nhaSanXuat || '';
             document.getElementById('editNamSanXuat').value = tb.namSanXuat || '';
+            document.getElementById('editDacDiem').value = tb.dacDiem || '';
+            document.getElementById('editNgayTiepNhan').value = tb.ngayTiepNhan || '';
+            document.getElementById('editNgayDuaVaoSuDung').value = tb.ngayDuaVaoSuDung || '';
+            document.getElementById('editPhuTung').value = tb.phuTungKemTheo || '';
+            document.getElementById('editTaiLieu').value = tb.taiLieuKemTheo || '';
+            document.getElementById('editTinhTrangTiepNhan').value = tb.tinhTrangTiepNhan || '';
             document.getElementById('editTrangThai').value = tb.trangThaiVanHanh || '';
             document.getElementById('editForm').classList.remove('hidden');
         }
@@ -178,6 +199,9 @@
                 tenThietBi: getField('editTen'), maSoQuanLy: getField('editMa'),
                 soSerial: getField('editSerial'), modelType: getField('editModel'),
                 nhaSanXuat: getField('editNhaSanXuat'), namSanXuat: getNumberField('editNamSanXuat'),
+                dacDiem: getField('editDacDiem'), ngayTiepNhan: getField('editNgayTiepNhan'),
+                ngayDuaVaoSuDung: getField('editNgayDuaVaoSuDung'), phuTungKemTheo: getField('editPhuTung'),
+                taiLieuKemTheo: getField('editTaiLieu'), tinhTrangTiepNhan: getField('editTinhTrangTiepNhan'),
                 trangThaiVanHanh: document.getElementById('editTrangThai').value
             });
             document.getElementById('editForm').classList.add('hidden');

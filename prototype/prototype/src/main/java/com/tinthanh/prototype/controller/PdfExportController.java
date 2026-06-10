@@ -92,7 +92,17 @@ public class PdfExportController {
     }
 
     private String buildLyLichHtml(ThietBiLyLich tb) {
-        return "<html><head><meta charset='utf-8'/><style>body{font-family:'Noto Sans', Arial, sans-serif;} .form-code{float:right;font-weight:bold;} h1{text-align:center;margin-top:8px;} table{width:100%;border-collapse:collapse;margin-top:24px;} td,th{border:1px solid #333;padding:8px;} th{background:#f2f2f2;text-align:left;} .note{margin-top:20px;}</style></head><body>"
+        return "<html><head><meta charset='utf-8'/><style>"
+                + "body{font-family:'Noto Sans', Arial, sans-serif;margin:0;padding:0;}"
+                + " .page{padding:24px;}"
+                + " .form-code{float:right;font-weight:bold;margin-bottom:8px;}"
+                + " h1{text-align:center;margin:0 0 16px;}"
+                + " table{width:100%;border-collapse:collapse;margin-top:8px;}"
+                + " th,td{border:1px solid #333;padding:10px;vertical-align:top;}"
+                + " th{background:#f2f2f2;text-align:left;width:35%;}"
+                + " .footer-table{width:100%;border:none;margin-top:32px;}"
+                + " .footer-table td{border:none;padding:12px 8px;}"
+                + "</style></head><body><div class='page'>"
                 + "<div class='form-code'>BM.BT.01.01</div>"
                 + "<h1>LÝ LỊCH MÁY MÓC THIẾT BỊ</h1>"
                 + "<table>"
@@ -102,13 +112,17 @@ public class PdfExportController {
                 + row("Số serial", tb.getSoSerial())
                 + row("Nhà sản xuất", tb.getNhaSanXuat())
                 + row("Năm sản xuất", tb.getNamSanXuat() == null ? "" : String.valueOf(tb.getNamSanXuat()))
-                + row("Xuất xứ/Nước sản xuất", safe(tb.getNhaSanXuat()))
-                + row("Công suất / Thông số kỹ thuật", "")
-                + row("Vị trí lắp đặt", "")
-                + row("Tình trạng máy móc thiết bị lúc tiếp nhận", tb.getTrangThaiVanHanh())
+                + row("Đặc điểm máy móc, thiết bị", safe(tb.getDacDiem()))
+                + row("Ngày tiếp nhận", tb.getNgayTiepNhan() == null ? "" : tb.getNgayTiepNhan().format(DATE_FORMAT))
+                + row("Ngày đưa vào sử dụng", tb.getNgayDuaVaoSuDung() == null ? "" : tb.getNgayDuaVaoSuDung().format(DATE_FORMAT))
+                + row("Phụ tùng kèm theo (nếu có)", safe(tb.getPhuTungKemTheo()))
+                + row("Tài liệu kèm theo (nếu có)", safe(tb.getTaiLieuKemTheo()))
+                + row("Tình trạng máy móc thiết bị lúc tiếp nhận (đánh giá theo % nếu có thể)", safe(tb.getTinhTrangTiepNhan()))
                 + "</table>"
-                + "<div class='note'><p><strong>Ghi chú:</strong> Thông tin bổ sung có thể cập nhật sau khi nhập dữ liệu.</p></div>"
-                + "</body></html>";
+                + "<table class='footer-table'>"
+                + "<tr><td>Người lập</td><td>Phê duyệt</td></tr>"
+                + "</table>"
+                + "</div></body></html>";
     }
 
     private String buildDanhMucHtml(List<ThietBiLyLich> items) {
@@ -165,14 +179,24 @@ public class PdfExportController {
         if (items.isEmpty()) {
             rows = "<tr><td colspan='16' style='text-align:center;color:#555;'>Không có dữ liệu</td></tr>";
         }
-        return "<html><head><meta charset='utf-8'/><style>body{font-family:'Noto Sans', Arial, sans-serif;} .form-code{float:right;font-weight:bold;} h1{text-align:center;}table{width:100%;border-collapse:collapse;margin-top:16px;}th,td{border:1px solid #333;padding:8px;}th{background:#f2f2f2;text-align:center;}</style></head><body>"
-                + "<div class='form-code'>BM.BT.01.03</div2f2;text-align:center;}</style></head><body>"
+        return "<html><head><meta charset='utf-8'/><style>"
+                + "body{font-family:'Noto Sans', Arial, sans-serif;margin:0;padding:0;}"
+                + " .page{padding:24px;}"
+                + " .form-code{float:right;font-weight:bold;margin-bottom:8px;}"
+                + " h1{text-align:center;margin:0 0 8px;}"
+                + " .subtitle{text-align:center;margin:0 0 18px;font-size:14px;}"
+                + " table{width:100%;border-collapse:collapse;margin-top:8px;}"
+                + " th,td{border:1px solid #333;padding:8px;text-align:center;}"
+                + " th{background:#f2f2f2;}"
+                + "</style></head><body><div class='page'>"
                 + "<div class='form-code'>BM.BT.01.03</div>"
                 + "<h1>KẾ HOẠCH BẢO DƯỠNG, HIỆU CHUẨN, KIỂM ĐỊNH</h1>"
+                + "<p class='subtitle'>Năm " + java.time.Year.now().getValue() + "</p>"
                 + "<table><thead><tr><th>Stt</th><th>Tên máy móc, thiết bị</th><th>Mã số</th><th>Bộ phận sử dụng</th>"
                 + "<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>Ghi chú</th></tr></thead><tbody>"
                 + rows
-                + "</tbody></table></body></html>";
+                + "</tbody></table>"
+                + "</div></body></html>";
     }
 
     private String buildBienBanHtml(List<com.tinthanh.prototype.model.CongViec> tasks) {
