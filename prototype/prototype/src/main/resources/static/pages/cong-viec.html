@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý công việc</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/yeu-cau.html" data-page="yeu-cau">Yêu cầu</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Kế hoạch</a>
+                <a href="/pages/bao-cao.html" data-page="bao-cao">Báo cáo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Quản lý công việc</div>
+            <h1>Quản lý danh sách, phân công công việc</h1>
+            <p>Phân công nhiệm vụ bảo trì và theo dõi tiến độ hoàn thành</p>
+        </div>
+
+        <div class="card">
+            <h2>Thêm công việc mới</h2>
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Tên công việc</label><input type="text" id="tenCongViec"></div>
+                <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
+                <div class="form-group"><label>Người phụ trách</label><input type="text" id="nguoiPhuTrach"></div>
+                <div class="form-group"><label>Hạn hoàn thành</label><input type="date" id="hanHoanThanh"></div>
+                <div class="form-group"><label>Độ ưu tiên</label>
+                    <select id="doUuTien"><option>Thấp</option><option>Trung bình</option><option selected>Cao</option></select>
+                </div>
+                <div class="form-group"><label>Trạng thái</label>
+                    <select id="trangThai"><option>Mới</option><option>Đang xử lý</option><option>Hoàn thành</option><option>Quá hạn</option></select>
+                </div>
+                <div class="form-group" style="grid-column: span 3;"><label>Mô tả</label><textarea id="moTa"></textarea></div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addCongViec()">Thêm công việc</button></div>
+        </div>
+
+        <div class="card">
+            <h2>Danh sách công việc</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Công việc</th><th>Thiết bị</th><th>Phụ trách</th><th>Hạn</th>
+                        <th>Ưu tiên</th><th>Trạng thái</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function load() {
+            const data = await apiGet(API.congViec);
+            document.getElementById('tableBody').innerHTML = data.map(c =>
+                `<tr>
+                    <td>${c.tenCongViec}</td><td>${c.maThietBi||''}</td>
+                    <td>${c.nguoiPhuTrach||''}</td><td>${formatDate(c.hanHoanThanh)}</td>
+                    <td>${c.doUuTien||''}</td><td>${badgeHtml(c.trangThai)}</td>
+                    <td class="actions">
+                        <select class="btn-sm" onchange="updateStatus('${c.id}', this.value)" style="padding:6px;">
+                            <option value="">Đổi TT</option>
+                            <option>Mới</option><option>Đang xử lý</option><option>Hoàn thành</option><option>Quá hạn</option>
+                        </select>
+                        <button class="btn btn-danger btn-sm" onclick="xoa('${c.id}')">Xóa</button>
+                    </td>
+                </tr>`
+            ).join('');
+        }
+
+        async function addCongViec() {
+            await apiPost(API.congViec, {
+                tenCongViec: getField('tenCongViec'), maThietBi: getField('maThietBi'),
+                nguoiPhuTrach: getField('nguoiPhuTrach'), hanHoanThanh: getField('hanHoanThanh') || null,
+                doUuTien: document.getElementById('doUuTien').value,
+                trangThai: document.getElementById('trangThai').value, moTa: getField('moTa')
+            });
+            clearFields(['tenCongViec','maThietBi','nguoiPhuTrach','hanHoanThanh','moTa']);
+            load();
+        }
+
+        async function updateStatus(id, status) {
+            if (!status) return;
+            const c = await apiGet(`${API.congViec}/${id}`);
+            c.trangThai = status;
+            await apiPut(`${API.congViec}/${id}`, c);
+            load();
+        }
+
+        async function xoa(id) { if (confirm('Xóa công việc?')) { await apiDelete(`${API.congViec}/${id}`); load(); } }
+        load();
+    </script>
+</body>
+</html>

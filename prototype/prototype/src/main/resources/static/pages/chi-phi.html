@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý chi phí</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/yeu-cau.html" data-page="yeu-cau">Yêu cầu</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Kế hoạch</a>
+                <a href="/pages/bao-cao.html" data-page="bao-cao">Báo cáo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Quản lý chi phí</div>
+            <h1>Quản lý chi phí bảo trì, sửa chữa</h1>
+            <p>Theo dõi chi phí phát sinh liên quan đến bảo trì thiết bị</p>
+        </div>
+
+        <div class="stats-row" id="statsRow"></div>
+
+        <div class="card">
+            <h2>Ghi nhận chi phí mới</h2>
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Loại chi phí</label>
+                    <select id="loaiChiPhi"><option>Bảo dưỡng</option><option>Sửa chữa</option><option>Thay thế linh kiện</option><option>Khác</option></select>
+                </div>
+                <div class="form-group"><label>Số tiền (VNĐ)</label><input type="number" id="soTien"></div>
+                <div class="form-group"><label>Ngày phát sinh</label><input type="date" id="ngayPhatSinh"></div>
+                <div class="form-group"><label>Mô tả</label><input type="text" id="moTa"></div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addChiPhi()">Lưu chi phí</button></div>
+        </div>
+
+        <div class="card">
+            <h2>Danh sách chi phí</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Thiết bị</th><th>Loại</th><th>Số tiền</th><th>Ngày</th><th>Mô tả</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function load() {
+            const data = await apiGet(API.chiPhi);
+            const total = data.reduce((s, c) => s + (c.soTien || 0), 0);
+            document.getElementById('statsRow').innerHTML = `
+                <div class="stat-card"><div class="stat-value">${data.length}</div><div class="stat-label">Khoản chi phí</div></div>
+                <div class="stat-card"><div class="stat-value">${formatCurrency(total)}</div><div class="stat-label">Tổng chi phí</div></div>
+                <div class="stat-card"><div class="stat-value">${formatCurrency(total / Math.max(data.length,1))}</div><div class="stat-label">Trung bình/khoản</div></div>
+                <div class="stat-card"><div class="stat-value">${data.filter(c=>c.loaiChiPhi==='Sửa chữa').length}</div><div class="stat-label">Sửa chữa</div></div>`;
+            document.getElementById('tableBody').innerHTML = data.map(c =>
+                `<tr>
+                    <td>${c.tenThietBi||c.maThietBi}</td><td>${c.loaiChiPhi||''}</td>
+                    <td>${formatCurrency(c.soTien)}</td><td>${formatDate(c.ngayPhatSinh)}</td>
+                    <td>${c.moTa||''}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="xoa('${c.id}')">Xóa</button></td>
+                </tr>`
+            ).join('');
+        }
+
+        async function addChiPhi() {
+            await apiPost(API.chiPhi, {
+                maThietBi: getField('maThietBi'), tenThietBi: getField('tenThietBi'),
+                loaiChiPhi: document.getElementById('loaiChiPhi').value,
+                soTien: getFloatField('soTien'),
+                ngayPhatSinh: getField('ngayPhatSinh') || null, moTa: getField('moTa')
+            });
+            clearFields(['maThietBi','tenThietBi','soTien','ngayPhatSinh','moTa']);
+            load();
+        }
+
+        async function xoa(id) { if (confirm('Xóa chi phí?')) { await apiDelete(`${API.chiPhi}/${id}`); load(); } }
+        load();
+    </script>
+</body>
+</html>

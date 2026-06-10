@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giám sát thiết bị</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/yeu-cau.html" data-page="yeu-cau">Yêu cầu</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Kế hoạch</a>
+                <a href="/pages/bao-cao.html" data-page="bao-cao">Báo cáo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Giám sát thiết bị</div>
+            <h1>Giám sát thiết bị</h1>
+            <p>Cập nhật kế hoạch, thông số vận hành và giờ máy</p>
+        </div>
+
+        <div class="card">
+            <h2>Ghi nhận thông số mới</h2>
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Tên thông số</label><input type="text" id="tenThongSo" placeholder="VD: Nhiệt độ, Tốc độ..."></div>
+                <div class="form-group"><label>Giá trị</label><input type="number" step="0.1" id="giaTri"></div>
+                <div class="form-group"><label>Đơn vị</label><input type="text" id="donVi" placeholder="°C, RPM, bar..."></div>
+                <div class="form-group"><label>Giờ máy</label><input type="number" id="gioMay"></div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addThongSo()">Ghi nhận</button></div>
+        </div>
+
+        <div class="card">
+            <h2>Trạng thái thiết bị hiện tại</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Tên</th><th>Mã số</th><th>Model</th><th>Trạng thái</th><th>Cập nhật</th></tr></thead>
+                    <tbody id="thietBiBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Thông số gần đây</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Thiết bị</th><th>Thông số</th><th>Giá trị</th><th>Giờ máy</th><th>Thời gian</th></tr></thead>
+                    <tbody id="thongSoBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function load() {
+            const [thietBi, thongSo] = await Promise.all([apiGet(API.thietBi), apiGet(API.thongSo)]);
+            document.getElementById('thietBiBody').innerHTML = thietBi.map(tb =>
+                `<tr>
+                    <td>${tb.tenThietBi}</td><td>${tb.maSoQuanLy}</td><td>${tb.modelType||''}</td>
+                    <td>${badgeHtml(tb.trangThaiVanHanh)}</td>
+                    <td><select onchange="updateStatus('${tb.id}', this.value)">
+                        <option value="Đang hoạt động" ${tb.trangThaiVanHanh==='Đang hoạt động'?'selected':''}>Đang hoạt động</option>
+                        <option value="Bảo dưỡng" ${tb.trangThaiVanHanh==='Bảo dưỡng'?'selected':''}>Bảo dưỡng</option>
+                        <option value="Sự cố" ${tb.trangThaiVanHanh==='Sự cố'?'selected':''}>Sự cố</option>
+                    </select></td>
+                </tr>`
+            ).join('');
+            document.getElementById('thongSoBody').innerHTML = thongSo.slice(0, 20).map(t =>
+                `<tr>
+                    <td>${t.tenThietBi||t.maThietBi}</td><td>${t.tenThongSo}</td>
+                    <td>${t.giaTri} ${t.donVi||''}</td><td>${t.gioMay||''}</td>
+                    <td>${formatDate(t.thoiGianGhi)}</td>
+                </tr>`
+            ).join('');
+        }
+
+        async function addThongSo() {
+            await apiPost(API.thongSo, {
+                maThietBi: getField('maThietBi'), tenThietBi: getField('tenThietBi'),
+                tenThongSo: getField('tenThongSo'), giaTri: getFloatField('giaTri'),
+                donVi: getField('donVi'), gioMay: getNumberField('gioMay')
+            });
+            clearFields(['maThietBi','tenThietBi','tenThongSo','giaTri','donVi','gioMay']);
+            load();
+        }
+
+        async function updateStatus(id, status) {
+            const tb = await apiGet(`${API.thietBi}/${id}`);
+            tb.trangThaiVanHanh = status;
+            await apiPut(`${API.thietBi}/${id}`, tb);
+            load();
+        }
+
+        load();
+    </script>
+</body>
+</html>

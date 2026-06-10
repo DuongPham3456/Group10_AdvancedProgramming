@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử thông số</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/yeu-cau.html" data-page="yeu-cau">Yêu cầu</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Kế hoạch</a>
+                <a href="/pages/bao-cao.html" data-page="bao-cao">Báo cáo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Lịch sử thông số</div>
+            <h1>Tra cứu lịch sử thông số</h1>
+            <p>Xem lại lịch sử thông số vận hành và giờ máy theo thiết bị</p>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <input id="searchMa" class="search-input" type="text" placeholder="Nhập mã thiết bị (VD: TB-001)">
+                <button class="btn btn-primary" onclick="search()">Tra cứu</button>
+                <button class="btn btn-secondary" onclick="loadAll()">Xem tất cả</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Kết quả tra cứu</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Mã TB</th><th>Tên thiết bị</th><th>Thông số</th>
+                        <th>Giá trị</th><th>Giờ máy</th><th>Thời gian ghi</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        function render(data) {
+            document.getElementById('tableBody').innerHTML = data.length === 0
+                ? '<tr><td colspan="6" style="text-align:center;color:#666;">Không có dữ liệu</td></tr>'
+                : data.map(t =>
+                    `<tr>
+                        <td>${t.maThietBi}</td><td>${t.tenThietBi||''}</td>
+                        <td>${t.tenThongSo}</td><td>${t.giaTri} ${t.donVi||''}</td>
+                        <td>${t.gioMay||''}</td><td>${t.thoiGianGhi ? t.thoiGianGhi.replace('T',' ').substring(0,19) : ''}</td>
+                    </tr>`
+                ).join('');
+        }
+
+        async function loadAll() {
+            render(await apiGet(API.thongSo));
+        }
+
+        async function search() {
+            const ma = getField('searchMa');
+            if (!ma) { loadAll(); return; }
+            render(await apiGet(`${API.thongSo}/search?maThietBi=${encodeURIComponent(ma)}`));
+        }
+
+        loadAll();
+    </script>
+</body>
+</html>

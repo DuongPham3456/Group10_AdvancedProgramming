@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yêu cầu bảo trì</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/yeu-cau.html" data-page="yeu-cau" class="active">Yêu cầu</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Kế hoạch</a>
+                <a href="/pages/bao-cao.html" data-page="bao-cao">Báo cáo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Yêu cầu bảo trì</div>
+            <h1>Tạo/duyệt &amp; quản lý yêu cầu bảo trì</h1>
+            <p>Tạo yêu cầu sửa chữa, duyệt hoặc từ chối yêu cầu bảo trì thiết bị</p>
+        </div>
+
+        <div class="card">
+            <h2>Tạo yêu cầu mới</h2>
+            <div class="form-grid">
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
+                <div class="form-group"><label>Mức độ</label>
+                    <select id="mucDo"><option>Thấp</option><option>Trung bình</option><option selected>Cao</option><option>Khẩn cấp</option></select>
+                </div>
+                <div class="form-group"><label>Người yêu cầu</label><input type="text" id="nguoiYeuCau"></div>
+                <div class="form-group" style="grid-column: span 2;"><label>Mô tả sự cố</label><textarea id="moTaSuCo"></textarea></div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addYeuCau()">Gửi yêu cầu</button></div>
+        </div>
+
+        <div class="card">
+            <h2>Danh sách yêu cầu</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Thiết bị</th><th>Mã TB</th><th>Mô tả</th><th>Mức độ</th>
+                        <th>Người YC</th><th>Ngày</th><th>Trạng thái</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function load() {
+            const data = await apiGet(API.yeuCau);
+            document.getElementById('tableBody').innerHTML = data.map(y =>
+                `<tr>
+                    <td>${y.tenThietBi}</td><td>${y.maThietBi}</td>
+                    <td>${(y.moTaSuCo||'').substring(0,60)}...</td>
+                    <td>${y.mucDo}</td><td>${y.nguoiYeuCau||''}</td>
+                    <td>${formatDate(y.ngayYeuCau)}</td>
+                    <td>${badgeHtml(y.trangThai)}</td>
+                    <td class="actions">
+                        ${y.trangThai === 'Chờ duyệt' ? `
+                            <button class="btn btn-success btn-sm" onclick="duyet('${y.id}')">Duyệt</button>
+                            <button class="btn btn-danger btn-sm" onclick="tuChoi('${y.id}')">Từ chối</button>` : ''}
+                        <button class="btn btn-danger btn-sm" onclick="xoa('${y.id}')">Xóa</button>
+                    </td>
+                </tr>`
+            ).join('');
+        }
+
+        async function addYeuCau() {
+            await apiPost(API.yeuCau, {
+                tenThietBi: getField('tenThietBi'), maThietBi: getField('maThietBi'),
+                moTaSuCo: getField('moTaSuCo'), mucDo: document.getElementById('mucDo').value,
+                nguoiYeuCau: getField('nguoiYeuCau')
+            });
+            clearFields(['tenThietBi','maThietBi','moTaSuCo','nguoiYeuCau']);
+            load();
+        }
+
+        async function duyet(id) { await apiPut(`${API.yeuCau}/${id}/duyet`, {}); load(); }
+        async function tuChoi(id) { await apiPut(`${API.yeuCau}/${id}/tuchoi`, {}); load(); }
+        async function xoa(id) { if (confirm('Xóa yêu cầu?')) { await apiDelete(`${API.yeuCau}/${id}`); load(); } }
+        load();
+    </script>
+</body>
+</html>
