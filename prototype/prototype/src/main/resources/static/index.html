@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+<<<<<<< Updated upstream
     <title>Quản lý thiết bị</title>
     <style>
         :root {
@@ -127,9 +128,36 @@
             <div style="display:flex; gap: 12px; flex-wrap: wrap;">
                 <button class="button-secondary" onclick="load()">Hiển thị tất cả</button>
                 <button class="button-primary" onclick="searchThietBi()">Tìm kiếm</button>
+=======
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Bảo trì thiết bị</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>.small-note{font-size:.8rem;color:#888;}</style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="4" y="8" width="24" height="18" rx="2"/>
+                    <path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/>
+                    <circle cx="16" cy="17" r="4"/>
+                </svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
+                <a href="/pages/su-co.html" data-page="su-co">Khắc phục sự cố</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span id="navUser" class="small-note"></span>
+                <button class="btn btn-secondary btn-sm" onclick="doLogout()">Đăng xuất</button>
+>>>>>>> Stashed changes
             </div>
         </div>
 
+<<<<<<< Updated upstream
         <div class="card">
             <h2>Thêm thiết bị mới</h2>
             <div class="form-grid">
@@ -292,6 +320,49 @@
         }
 
         load();
+=======
+    <section class="hero">
+        <h1>Quản lý Bảo trì Thiết bị</h1>
+        <p>Hệ thống quản lý theo quy trình BT.01 — Tín Thành Environment Technology</p>
+    </section>
+
+    <section class="features-section">
+        <div class="features-grid" style="grid-template-columns:repeat(3,1fr)">
+            <a href="/pages/thiet-bi.html" class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M14 12h8v8h-8zM26 12h8v8h-8zM38 12h8v8h-8z"/>
+                    <path d="M14 24h8v8h-8zM26 24h8v8h-8zM38 24h8v8h-8z"/>
+                    <path d="M14 36h8v8h-8zM26 36h8v8h-8zM38 36h8v8h-8z"/>
+                </svg>
+                <h3>Danh mục thiết bị</h3>
+                <p>BM.BT.01.01 &amp; BM.BT.01.02 — Lý lịch và danh mục máy móc thiết bị</p>
+            </a>
+
+            <a href="/pages/ke-hoach.html" class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="10" y="6" width="36" height="48" rx="2"/>
+                    <path d="M18 18h20M18 26h20M18 34h12"/>
+                    <path d="M38 42l14 8v-16l-14 8z"/>
+                </svg>
+                <h3>Bảo dưỡng định kỳ</h3>
+                <p>BM.BT.01.03 — Lập kế hoạch, duyệt, thực hiện và bàn giao bảo dưỡng</p>
+            </a>
+
+            <a href="/pages/su-co.html" class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="32" cy="32" r="22"/>
+                    <path d="M32 20v14M32 42v2"/>
+                </svg>
+                <h3>Khắc phục sự cố</h3>
+                <p>BM.BT.01.04 — Phát hiện sự cố, lập phương án, duyệt, sửa chữa và nghiệm thu</p>
+            </a>
+        </div>
+    </section>
+
+    <script src="/js/common.js"></script>
+    <script>
+        initNav('');
+>>>>>>> Stashed changes
     </script>
 </body>
 </html>

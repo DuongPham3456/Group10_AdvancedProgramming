@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảo dưỡng định kỳ</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;}
+        .modal-box{background:#fff;border-radius:12px;padding:32px;max-width:480px;width:90%;}
+        .modal-box h3{margin:0 0 20px;color:#8b3a8f;}
+        .text-danger{color:#dc2626;}
+        .small-note{font-size:.8rem;color:#888;}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
+                <a href="/pages/su-co.html" data-page="su-co">Khắc phục sự cố</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span id="navUser" class="small-note"></span>
+                <button class="btn btn-secondary btn-sm" onclick="doLogout()">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Bảo dưỡng định kỳ</div>
+            <h1>Quy trình bảo dưỡng định kỳ (5.1)</h1>
+            <p>Lập kế hoạch, phê duyệt, thực hiện và bàn giao bảo dưỡng thiết bị</p>
+        </div>
+
+        <div class="card" id="formCard" style="display:none">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <h2>Lập kế hoạch bảo dưỡng mới</h2>
+                <button class="btn btn-secondary" onclick="openPdf('/api/pdf/kehoach')">Xuất PDF BM.BT.01.03</button>
+            </div>
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Tên kế hoạch</label><input type="text" id="tenKeHoach"></div>
+                <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Loại bảo trì</label>
+                    <select id="loaiBaoTri"><option>Định kỳ</option><option>Sửa chữa</option><option>Kiểm tra</option></select>
+                </div>
+                <div class="form-group"><label>Ngày bắt đầu</label><input type="date" id="ngayBatDau"></div>
+                <div class="form-group"><label>Ngày kết thúc</label><input type="date" id="ngayKetThuc"></div>
+                <div class="form-group"><label>Chu kỳ (ngày)</label><input type="number" id="chuKyNgay"></div>
+                <div class="form-group" style="grid-column:span 2"><label>Nội dung</label><textarea id="noiDung"></textarea></div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addKeHoach()">Lưu kế hoạch</button></div>
+        </div>
+
+        <div class="card">
+            <h2>Danh sách kế hoạch bảo dưỡng</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Tên kế hoạch</th><th>Thiết bị</th><th>Loại</th>
+                        <th>Bắt đầu</th><th>Kết thúc</th><th>Chu kỳ</th>
+                        <th>Trạng thái</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Từ chối -->
+    <div id="modalTuChoi" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Từ chối kế hoạch</h3>
+            <div class="form-group">
+                <label>Lý do từ chối <span class="text-danger">*</span></label>
+                <textarea id="lyDoTuChoi" rows="4" placeholder="Nhập lý do từ chối để gửi lại BP.QLTB..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-danger" onclick="submitTuChoi()">Xác nhận từ chối</button>
+                <button class="btn btn-secondary" onclick="closeModal('modalTuChoi')">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Bắt đầu thực hiện -->
+    <div id="modalThucHien" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Bắt đầu thực hiện bảo dưỡng</h3>
+            <div class="form-group"><label>Người thực hiện</label><input type="text" id="nguoiThucHien"></div>
+            <div class="form-group"><label>Đơn vị thuê ngoài (nếu có)</label><input type="text" id="donViThueNgoai" placeholder="Để trống nếu tự thực hiện"></div>
+            <div class="form-group"><label>Ngày thực hiện thực tế</label><input type="date" id="ngayThucHienThucTe"></div>
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="submitThucHien()">Xác nhận thực hiện</button>
+                <button class="btn btn-secondary" onclick="closeModal('modalThucHien')">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Hoàn thành -->
+    <div id="modalHoanThanh" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Hoàn thành &amp; Bàn giao</h3>
+            <div class="form-group">
+                <label>Kết quả bảo dưỡng <span class="text-danger">*</span></label>
+                <textarea id="ketQuaBaoDuong" rows="4" placeholder="Mô tả kết quả, phụ tùng thay thế, chất lượng máy sau bảo dưỡng..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-success" onclick="submitHoanThanh()">Xác nhận hoàn thành</button>
+                <button class="btn btn-secondary" onclick="closeModal('modalHoanThanh')">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        let actionId = null;
+
+        async function init() {
+            await initNav('ke-hoach');
+            if (hasRole('BP_QLTB')) {
+                document.getElementById('formCard').style.display = 'block';
+            }
+            load();
+        }
+
+        async function load() {
+            const data = await apiGet(API.keHoach);
+            if (!data) return;
+            document.getElementById('tableBody').innerHTML = data.map(renderRow).join('');
+        }
+
+        function renderRow(k) {
+            const isBp    = hasRole('BP_QLTB');
+            const isGd    = hasRole('GIAM_DOC');
+            const canDone = hasRole('BP_QLTB', 'CONG_NHAN', 'QUAN_LY_VUNG');
+
+            let actions = '';
+            if (k.trangThai === 'Chờ duyệt') {
+                if (isGd) {
+                    actions += `<button class="btn btn-success btn-sm" onclick="duyet('${k.id}')">Duyệt</button> `;
+                    actions += `<button class="btn btn-danger btn-sm" onclick="openTuChoi('${k.id}')">Từ chối</button>`;
+                }
+                if (isBp) actions += ` <button class="btn btn-danger btn-sm" onclick="xoa('${k.id}')">Xóa</button>`;
+            } else if (k.trangThai === 'Đã duyệt' && isBp) {
+                actions += `<button class="btn btn-primary btn-sm" onclick="openThucHien('${k.id}')">Bắt đầu thực hiện</button>`;
+            } else if (k.trangThai === 'Đang thực hiện' && canDone) {
+                actions += `<button class="btn btn-success btn-sm" onclick="openHoanThanh('${k.id}')">Hoàn thành</button>`;
+            }
+
+            const note = (k.trangThai === 'Từ chối' && k.lyDoTuChoi)
+                ? `<br><small class="text-danger">Lý do: ${k.lyDoTuChoi}</small>` : '';
+            const exec = k.nguoiThucHien
+                ? `<br><small class="small-note">Người TH: ${k.nguoiThucHien}${k.donViThueNgoai ? ' / ' + k.donViThueNgoai : ''}</small>` : '';
+
+            return `<tr>
+                <td>${k.tenKeHoach}</td>
+                <td>${k.tenThietBi || k.maThietBi}</td>
+                <td>${k.loaiBaoTri || ''}</td>
+                <td>${formatDate(k.ngayBatDau)}</td>
+                <td>${formatDate(k.ngayKetThuc)}</td>
+                <td>${k.chuKyNgay || ''} ngày</td>
+                <td>${badgeHtml(k.trangThai)}${note}${exec}</td>
+                <td class="actions">${actions}</td>
+            </tr>`;
+        }
+
+        async function addKeHoach() {
+            const r = await apiPost(API.keHoach, {
+                tenKeHoach: getField('tenKeHoach'),
+                maThietBi:  getField('maThietBi'),
+                tenThietBi: getField('tenThietBi'),
+                loaiBaoTri: document.getElementById('loaiBaoTri').value,
+                ngayBatDau: getField('ngayBatDau') || null,
+                ngayKetThuc: getField('ngayKetThuc') || null,
+                chuKyNgay: getNumberField('chuKyNgay'),
+                noiDung: getField('noiDung')
+            });
+            if (!r) return;
+            clearFields(['tenKeHoach','maThietBi','tenThietBi','ngayBatDau','ngayKetThuc','chuKyNgay','noiDung']);
+            load();
+        }
+
+        async function duyet(id) {
+            if (!confirm('Phê duyệt kế hoạch này?')) return;
+            const r = await apiPut(`${API.keHoach}/${id}/duyet`, {});
+            if (r) load();
+        }
+
+        function openTuChoi(id) {
+            actionId = id;
+            document.getElementById('lyDoTuChoi').value = '';
+            showModal('modalTuChoi');
+        }
+        async function submitTuChoi() {
+            const ly = getField('lyDoTuChoi');
+            if (!ly) { alert('Vui lòng nhập lý do từ chối.'); return; }
+            const r = await apiPut(`${API.keHoach}/${actionId}/tuchoi`, { lyDoTuChoi: ly });
+            if (r) { closeModal('modalTuChoi'); load(); }
+        }
+
+        function openThucHien(id) {
+            actionId = id;
+            clearFields(['nguoiThucHien','donViThueNgoai','ngayThucHienThucTe']);
+            showModal('modalThucHien');
+        }
+        async function submitThucHien() {
+            const r = await apiPut(`${API.keHoach}/${actionId}/thuchien`, {
+                nguoiThucHien:     getField('nguoiThucHien'),
+                donViThueNgoai:    getField('donViThueNgoai'),
+                ngayThucHienThucTe: getField('ngayThucHienThucTe') || null
+            });
+            if (r) { closeModal('modalThucHien'); load(); }
+        }
+
+        function openHoanThanh(id) {
+            actionId = id;
+            document.getElementById('ketQuaBaoDuong').value = '';
+            showModal('modalHoanThanh');
+        }
+        async function submitHoanThanh() {
+            const kq = getField('ketQuaBaoDuong');
+            if (!kq) { alert('Vui lòng nhập kết quả bảo dưỡng.'); return; }
+            const r = await apiPut(`${API.keHoach}/${actionId}/hoanthanh`, { ketQuaBaoDuong: kq });
+            if (r) { closeModal('modalHoanThanh'); load(); }
+        }
+
+        async function xoa(id) {
+            if (!confirm('Xóa kế hoạch này?')) return;
+            await apiDelete(`${API.keHoach}/${id}`);
+            load();
+        }
+
+        init();
+    </script>
+</body>
+</html>

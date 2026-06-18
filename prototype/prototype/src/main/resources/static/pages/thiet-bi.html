@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý thiết bị</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>.small-note{font-size:.8rem;color:#888;}</style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
+                <a href="/pages/su-co.html" data-page="su-co">Khắc phục sự cố</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span id="navUser" class="small-note"></span>
+                <button class="btn btn-secondary btn-sm" onclick="doLogout()">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Quản lý thiết bị</div>
+            <h1>Quản lý danh sách thiết bị</h1>
+            <p>Thêm mới thiết bị, cập nhật trạng thái khi tiến hành bảo trì</p>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <input id="search" class="search-input" type="text" placeholder="Tìm kiếm theo tên hoặc mã số">
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                    <button class="btn btn-secondary" onclick="load()">Hiển thị tất cả</button>
+                    <button class="btn btn-secondary" onclick="openPdf('/api/pdf/thietbi/danhmuc')">Xuất PDF danh mục (BM.BT.01.02)</button>
+                    <button class="btn btn-secondary" onclick="exportLyLichPrompt()">Xuất PDF lý lịch (BM.BT.01.01)</button>
+                    <button class="btn btn-primary" onclick="searchThietBi()">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create form — QUAN_LY_TRAM only -->
+        <div class="card" id="formCard" style="display:none">
+            <h2>Thêm thiết bị mới</h2>
+            <div class="form-grid">
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="ten"></div>
+                <div class="form-group"><label>Mã số quản lý</label><input type="text" id="ma"></div>
+                <div class="form-group"><label>Số serial</label><input type="text" id="serial"></div>
+                <div class="form-group"><label>Model</label><input type="text" id="model"></div>
+                <div class="form-group"><label>Nhà sản xuất</label><input type="text" id="nhaSanXuat"></div>
+                <div class="form-group"><label>Năm sản xuất</label><input type="number" id="namSanXuat"></div>
+                <div class="form-group"><label>Đặc điểm máy móc, thiết bị</label><textarea id="dacDiem"></textarea></div>
+                <div class="form-group"><label>Ngày tiếp nhận</label><input type="date" id="ngayTiepNhan"></div>
+                <div class="form-group"><label>Ngày đưa vào sử dụng</label><input type="date" id="ngayDuaVaoSuDung"></div>
+                <div class="form-group"><label>Phụ tùng kèm theo</label><input type="text" id="phuTung"></div>
+                <div class="form-group"><label>Tài liệu kèm theo</label><input type="text" id="taiLieu"></div>
+                <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="tinhTrangTiepNhan" placeholder="Ví dụ: 95% hoạt động"></div>
+                <div class="form-group"><label>Trạng thái</label>
+                    <select id="trangThai">
+                        <option value="Đang hoạt động">Đang hoạt động</option>
+                        <option value="Sự cố">Sự cố</option>
+                        <option value="Bảo dưỡng">Bảo dưỡng</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addThietBi()">Lưu thiết bị</button></div>
+        </div>
+
+        <div id="editForm" class="card hidden">
+            <h2>Chỉnh sửa thiết bị</h2>
+            <input type="hidden" id="editId">
+            <div class="form-grid">
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="editTen"></div>
+                <div class="form-group"><label>Mã số quản lý</label><input type="text" id="editMa"></div>
+                <div class="form-group"><label>Số serial</label><input type="text" id="editSerial"></div>
+                <div class="form-group"><label>Model</label><input type="text" id="editModel"></div>
+                <div class="form-group"><label>Nhà sản xuất</label><input type="text" id="editNhaSanXuat"></div>
+                <div class="form-group"><label>Năm sản xuất</label><input type="number" id="editNamSanXuat"></div>
+                <div class="form-group"><label>Đặc điểm máy móc, thiết bị</label><textarea id="editDacDiem"></textarea></div>
+                <div class="form-group"><label>Ngày tiếp nhận</label><input type="date" id="editNgayTiepNhan"></div>
+                <div class="form-group"><label>Ngày đưa vào sử dụng</label><input type="date" id="editNgayDuaVaoSuDung"></div>
+                <div class="form-group"><label>Phụ tùng kèm theo</label><input type="text" id="editPhuTung"></div>
+                <div class="form-group"><label>Tài liệu kèm theo</label><input type="text" id="editTaiLieu"></div>
+                <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="editTinhTrangTiepNhan"></div>
+                <div class="form-group"><label>Trạng thái</label>
+                    <select id="editTrangThai">
+                        <option value="Đang hoạt động">Đang hoạt động</option>
+                        <option value="Sự cố">Sự cố</option>
+                        <option value="Bảo dưỡng">Bảo dưỡng</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="updateThietBi()">Cập nhật</button>
+                <button class="btn btn-secondary" onclick="cancelEdit()">Hủy</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Danh sách thiết bị</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Tên</th><th>Mã số</th><th>Serial</th><th>Model</th>
+                        <th>Nhà SX</th><th>Năm SX</th><th>Trạng thái</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="bangThietBi"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function init() {
+            await initNav('thiet-bi');
+            if (hasRole('QUAN_LY_TRAM')) {
+                document.getElementById('formCard').style.display = 'block';
+            }
+            load();
+        }
+
+        async function load() {
+            const data = await apiGet(API.thietBi);
+            if (!data) return;
+            renderTable(data);
+        }
+
+        function renderTable(data) {
+            const canManage = hasRole('QUAN_LY_TRAM');
+            document.getElementById('bangThietBi').innerHTML = data.map(tb =>
+                `<tr>
+                    <td>${tb.tenThietBi || ''}</td>
+                    <td>${tb.maSoQuanLy || ''}</td>
+                    <td>${tb.soSerial || ''}</td>
+                    <td>${tb.modelType || ''}</td>
+                    <td>${tb.nhaSanXuat || ''}</td>
+                    <td>${tb.namSanXuat || ''}</td>
+                    <td>${badgeHtml(tb.trangThaiVanHanh)}</td>
+                    <td class="actions">
+                        <button class="btn btn-secondary btn-sm" onclick="openPdf('/api/pdf/thietbi/lylich/${tb.idThietBi}')">PDF lý lịch</button>
+                        ${canManage ? `<button class="btn btn-secondary btn-sm" onclick="editThietBi('${tb.idThietBi}')">Sửa</button>` : ''}
+                        ${canManage ? `<button class="btn btn-danger btn-sm" onclick="deleteThietBi('${tb.idThietBi}')">Xóa</button>` : ''}
+                    </td>
+                </tr>`
+            ).join('');
+        }
+
+        function exportLyLichPrompt() {
+            const id = prompt('Nhập ID thiết bị để xuất lý lịch:');
+            if (id && id.trim()) openPdf(`/api/pdf/thietbi/lylich/${encodeURIComponent(id.trim())}`);
+        }
+
+        async function searchThietBi() {
+            const keyword = getField('search');
+            if (!keyword) { load(); return; }
+            const data = await apiGet(`${API.thietBi}/search?keyword=${encodeURIComponent(keyword)}`);
+            if (data) renderTable(data);
+        }
+
+        async function addThietBi() {
+            const r = await apiPost(API.thietBi, {
+                tenThietBi: getField('ten'), maSoQuanLy: getField('ma'),
+                soSerial: getField('serial'), modelType: getField('model'),
+                nhaSanXuat: getField('nhaSanXuat'), namSanXuat: getNumberField('namSanXuat'),
+                dacDiem: getField('dacDiem'), ngayTiepNhan: getField('ngayTiepNhan') || null,
+                ngayDuaVaoSuDung: getField('ngayDuaVaoSuDung') || null,
+                phuTungKemTheo: getField('phuTung'), taiLieuKemTheo: getField('taiLieu'),
+                tinhTrangTiepNhan: getField('tinhTrangTiepNhan'),
+                trangThaiVanHanh: document.getElementById('trangThai').value
+            });
+            if (!r) return;
+            clearFields(['ten','ma','serial','model','nhaSanXuat','namSanXuat','dacDiem',
+                         'ngayTiepNhan','ngayDuaVaoSuDung','phuTung','taiLieu','tinhTrangTiepNhan']);
+            load();
+        }
+
+        async function editThietBi(id) {
+            const tb = await apiGet(`${API.thietBi}/${id}`);
+            if (!tb) return;
+            document.getElementById('editId').value = tb.idThietBi;
+            document.getElementById('editTen').value = tb.tenThietBi || '';
+            document.getElementById('editMa').value = tb.maSoQuanLy || '';
+            document.getElementById('editSerial').value = tb.soSerial || '';
+            document.getElementById('editModel').value = tb.modelType || '';
+            document.getElementById('editNhaSanXuat').value = tb.nhaSanXuat || '';
+            document.getElementById('editNamSanXuat').value = tb.namSanXuat || '';
+            document.getElementById('editDacDiem').value = tb.dacDiem || '';
+            document.getElementById('editNgayTiepNhan').value = tb.ngayTiepNhan || '';
+            document.getElementById('editNgayDuaVaoSuDung').value = tb.ngayDuaVaoSuDung || '';
+            document.getElementById('editPhuTung').value = tb.phuTungKemTheo || '';
+            document.getElementById('editTaiLieu').value = tb.taiLieuKemTheo || '';
+            document.getElementById('editTinhTrangTiepNhan').value = tb.tinhTrangTiepNhan || '';
+            document.getElementById('editTrangThai').value = tb.trangThaiVanHanh || '';
+            document.getElementById('editForm').classList.remove('hidden');
+        }
+
+        async function updateThietBi() {
+            const id = document.getElementById('editId').value;
+            const r = await apiPut(`${API.thietBi}/${id}`, {
+                tenThietBi: getField('editTen'), maSoQuanLy: getField('editMa'),
+                soSerial: getField('editSerial'), modelType: getField('editModel'),
+                nhaSanXuat: getField('editNhaSanXuat'), namSanXuat: getNumberField('editNamSanXuat'),
+                dacDiem: getField('editDacDiem'), ngayTiepNhan: getField('editNgayTiepNhan') || null,
+                ngayDuaVaoSuDung: getField('editNgayDuaVaoSuDung') || null,
+                phuTungKemTheo: getField('editPhuTung'), taiLieuKemTheo: getField('editTaiLieu'),
+                tinhTrangTiepNhan: getField('editTinhTrangTiepNhan'),
+                trangThaiVanHanh: document.getElementById('editTrangThai').value
+            });
+            if (!r) return;
+            document.getElementById('editForm').classList.add('hidden');
+            load();
+        }
+
+        function cancelEdit() { document.getElementById('editForm').classList.add('hidden'); }
+
+        async function deleteThietBi(id) {
+            if (!confirm('Xóa thiết bị này?')) return;
+            await apiDelete(`${API.thietBi}/${id}`);
+            load();
+        }
+
+        init();
+    </script>
+</body>
+</html>

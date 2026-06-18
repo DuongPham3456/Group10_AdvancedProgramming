@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khắc phục sự cố</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;}
+        .modal-box{background:#fff;border-radius:12px;padding:32px;max-width:480px;width:90%;}
+        .modal-box h3{margin:0 0 20px;color:#8b3a8f;}
+        .text-danger{color:#dc2626;}
+        .small-note{font-size:.8rem;color:#888;}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
+                <a href="/pages/su-co.html" data-page="su-co">Khắc phục sự cố</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span id="navUser" class="small-note"></span>
+                <button class="btn btn-secondary btn-sm" onclick="doLogout()">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Khắc phục sự cố</div>
+            <h1>Quy trình khắc phục sự cố (5.2)</h1>
+            <p>Phát hiện sự cố, lập phương án, phê duyệt, sửa chữa và nghiệm thu</p>
+        </div>
+
+        <!-- Report form — CONG_NHAN only -->
+        <div class="card" id="formCard" style="display:none">
+            <h2>Báo cáo sự cố mới</h2>
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Mã thiết bị</label><input type="text" id="maThietBi"></div>
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Mức độ</label>
+                    <select id="mucDo"><option>Cao</option><option>Trung bình</option><option>Thấp</option></select>
+                </div>
+                <div class="form-group" style="grid-column:span 3">
+                    <label>Mô tả sự cố</label>
+                    <textarea id="moTaSuCo" placeholder="Mô tả chi tiết tình trạng sự cố..."></textarea>
+                </div>
+            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="addSuCo()">Báo cáo sự cố</button></div>
+        </div>
+
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <h2>Danh sách sự cố</h2>
+                <button class="btn btn-secondary" onclick="openPdf('/api/pdf/nghiemthu')">Xuất PDF BM.BT.01.04</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Thiết bị</th><th>Mô tả sự cố</th><th>Mức độ</th>
+                        <th>Người báo cáo</th><th>Ngày</th><th>Trạng thái</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Lập phương án -->
+    <div id="modalLapKeHoach" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Lập phương án sửa chữa</h3>
+            <div class="form-group">
+                <label>Phương án sửa chữa <span class="text-danger">*</span></label>
+                <textarea id="phuongAnSuaChua" rows="5" placeholder="Mô tả chi tiết phương án sửa chữa, phụ tùng cần chuẩn bị..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="submitLapKeHoach()">Gửi phê duyệt</button>
+                <button class="btn btn-secondary" onclick="closeModal('modalLapKeHoach')">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Từ chối -->
+    <div id="modalTuChoi" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Từ chối phương án sửa chữa</h3>
+            <div class="form-group">
+                <label>Lý do từ chối <span class="text-danger">*</span></label>
+                <textarea id="lyDoTuChoi" rows="4" placeholder="Nhập lý do từ chối..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-danger" onclick="submitTuChoi()">Xác nhận từ chối</button>
+                <button class="btn btn-secondary" onclick="closeModal('modalTuChoi')">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nghiệm thu -->
+    <div id="modalNghiemThu" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Nghiệm thu sửa chữa</h3>
+            <div class="form-group">
+                <label>Kết quả sửa chữa <span class="text-danger">*</span></label>
+                <textarea id="ketQuaSuaChua" rows="4" placeholder="Mô tả tình trạng hoạt động sau sửa chữa..."></textarea>
+            </div>
+            <div class="form-group"><label>Người nghiệm thu</label><input type="text" id="nguoiNghiemThu"></div>
+            <div class="form-actions">
+                <button class="btn btn-success" onclick="submitNghiemThu()">Xác nhận nghiệm thu</button>
+                <button class="btn btn-secondary" onclick="closeModal('modalNghiemThu')">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        let actionId = null;
+
+        async function init() {
+            await initNav('su-co');
+            if (hasRole('CONG_NHAN')) {
+                document.getElementById('formCard').style.display = 'block';
+            }
+            load();
+        }
+
+        async function load() {
+            const data = await apiGet(API.suCo);
+            if (!data) return;
+            document.getElementById('tableBody').innerHTML = data.map(renderRow).join('');
+        }
+
+        function renderRow(y) {
+            const isBp   = hasRole('BP_QLTB', 'QUAN_LY_TRAM');
+            const isGd   = hasRole('GIAM_DOC');
+            const canAcc = hasRole('CONG_NHAN', 'QUAN_LY_TRAM');
+            const isCn   = hasRole('CONG_NHAN');
+
+            let actions = '';
+            if (y.trangThai === 'Phát hiện') {
+                if (isBp) actions += `<button class="btn btn-primary btn-sm" onclick="openLapKeHoach('${y.id}')">Lập phương án</button> `;
+                if (isCn) actions += `<button class="btn btn-danger btn-sm" onclick="xoa('${y.id}')">Xóa</button>`;
+            } else if (y.trangThai === 'Chờ duyệt') {
+                if (isGd) {
+                    actions += `<button class="btn btn-success btn-sm" onclick="duyet('${y.id}')">Duyệt</button> `;
+                    actions += `<button class="btn btn-danger btn-sm" onclick="openTuChoi('${y.id}')">Từ chối</button>`;
+                }
+            } else if (y.trangThai === 'Đang sửa chữa') {
+                if (canAcc) actions += `<button class="btn btn-success btn-sm" onclick="openNghiemThu('${y.id}')">Nghiệm thu</button>`;
+            }
+
+            const plan = y.phuongAnSuaChua
+                ? `<br><small class="small-note">PA: ${y.phuongAnSuaChua.substring(0,60)}${y.phuongAnSuaChua.length > 60 ? '...' : ''}</small>` : '';
+            const note = (y.trangThai === 'Từ chối' && y.lyDoTuChoi)
+                ? `<br><small class="text-danger">Lý do: ${y.lyDoTuChoi}</small>` : '';
+
+            return `<tr>
+                <td>${y.tenThietBi || y.maThietBi}</td>
+                <td>${y.moTaSuCo || ''}</td>
+                <td>${y.mucDo || ''}</td>
+                <td>${y.nguoiYeuCau || ''}</td>
+                <td>${formatDate(y.ngayYeuCau)}</td>
+                <td>${badgeHtml(y.trangThai)}${note}${plan}</td>
+                <td class="actions">${actions}</td>
+            </tr>`;
+        }
+
+        async function addSuCo() {
+            const r = await apiPost(API.suCo, {
+                maThietBi:  getField('maThietBi'),
+                tenThietBi: getField('tenThietBi'),
+                mucDo:      document.getElementById('mucDo').value,
+                moTaSuCo:   getField('moTaSuCo'),
+                nguoiYeuCau: currentUser.hoTen
+            });
+            if (!r) return;
+            clearFields(['maThietBi','tenThietBi','moTaSuCo']);
+            load();
+        }
+
+        function openLapKeHoach(id) {
+            actionId = id;
+            document.getElementById('phuongAnSuaChua').value = '';
+            showModal('modalLapKeHoach');
+        }
+        async function submitLapKeHoach() {
+            const pa = getField('phuongAnSuaChua');
+            if (!pa) { alert('Vui lòng nhập phương án sửa chữa.'); return; }
+            const r = await apiPut(`${API.suCo}/${actionId}/lapkehoach`, { phuongAnSuaChua: pa });
+            if (r) { closeModal('modalLapKeHoach'); load(); }
+        }
+
+        async function duyet(id) {
+            if (!confirm('Duyệt phương án sửa chữa này?')) return;
+            const r = await apiPut(`${API.suCo}/${id}/duyet`, {});
+            if (r) load();
+        }
+
+        function openTuChoi(id) {
+            actionId = id;
+            document.getElementById('lyDoTuChoi').value = '';
+            showModal('modalTuChoi');
+        }
+        async function submitTuChoi() {
+            const ly = getField('lyDoTuChoi');
+            if (!ly) { alert('Vui lòng nhập lý do từ chối.'); return; }
+            const r = await apiPut(`${API.suCo}/${actionId}/tuchoi`, { lyDoTuChoi: ly });
+            if (r) { closeModal('modalTuChoi'); load(); }
+        }
+
+        function openNghiemThu(id) {
+            actionId = id;
+            clearFields(['ketQuaSuaChua','nguoiNghiemThu']);
+            showModal('modalNghiemThu');
+        }
+        async function submitNghiemThu() {
+            const kq = getField('ketQuaSuaChua');
+            if (!kq) { alert('Vui lòng nhập kết quả sửa chữa.'); return; }
+            const r = await apiPut(`${API.suCo}/${actionId}/nghiemthu`, {
+                ketQuaSuaChua: kq,
+                nguoiNghiemThu: getField('nguoiNghiemThu')
+            });
+            if (r) { closeModal('modalNghiemThu'); load(); }
+        }
+
+        async function xoa(id) {
+            if (!confirm('Xóa báo cáo sự cố này?')) return;
+            await apiDelete(`${API.suCo}/${id}`);
+            load();
+        }
+
+        init();
+    </script>
+</body>
+</html>
