@@ -1,5 +1,6 @@
 package com.tinthanh.prototype.model;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,22 @@ public class ThietBiLyLich {
     private String nhaSanXuat;
     private Integer namSanXuat;
     private String trangThaiVanHanh;
+
+    @Column(columnDefinition = "TEXT")
+    private String dacDiem;
+
+    private LocalDate ngayTiepNhan;
+
+    private LocalDate ngayDuaVaoSuDung;
+
+    @Column(columnDefinition = "TEXT")
+    private String phuTungKemTheo;
+
+    @Column(columnDefinition = "TEXT")
+    private String taiLieuKemTheo;
+
+    @Column(columnDefinition = "TEXT")
+    private String tinhTrangTiepNhan;
 
     // Getters and Setters
     public UUID getIdThietBi() {
@@ -94,4 +111,17 @@ public class ThietBiLyLich {
     public void setTrangThaiVanHanh(String trangThaiVanHanh) {
         this.trangThaiVanHanh = trangThaiVanHanh;
     }
+
+    public String getDacDiem() { return dacDiem; }
+    public void setDacDiem(String dacDiem) { this.dacDiem = dacDiem; }
+    public LocalDate getNgayTiepNhan() { return ngayTiepNhan; }
+    public void setNgayTiepNhan(LocalDate ngayTiepNhan) { this.ngayTiepNhan = ngayTiepNhan; }
+    public LocalDate getNgayDuaVaoSuDung() { return ngayDuaVaoSuDung; }
+    public void setNgayDuaVaoSuDung(LocalDate ngayDuaVaoSuDung) { this.ngayDuaVaoSuDung = ngayDuaVaoSuDung; }
+    public String getPhuTungKemTheo() { return phuTungKemTheo; }
+    public void setPhuTungKemTheo(String phuTungKemTheo) { this.phuTungKemTheo = phuTungKemTheo; }
+    public String getTaiLieuKemTheo() { return taiLieuKemTheo; }
+    public void setTaiLieuKemTheo(String taiLieuKemTheo) { this.taiLieuKemTheo = taiLieuKemTheo; }
+    public String getTinhTrangTiepNhan() { return tinhTrangTiepNhan; }
+    public void setTinhTrangTiepNhan(String tinhTrangTiepNhan) { this.tinhTrangTiepNhan = tinhTrangTiepNhan; }
 }
