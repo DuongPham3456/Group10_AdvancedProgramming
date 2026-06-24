@@ -36,8 +36,8 @@
     </section>
 
     <section class="features-section">
-        <div class="features-grid" style="grid-template-columns:repeat(3,1fr)">
-            <a href="/pages/thiet-bi.html" class="feature-card">
+        <div class="features-grid">
+            <a href="/pages/thiet-bi.html" class="feature-card" data-roles="QUAN_LY_TRAM,CONG_NHAN">
                 <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M14 12h8v8h-8zM26 12h8v8h-8zM38 12h8v8h-8z"/>
                     <path d="M14 24h8v8h-8zM26 24h8v8h-8zM38 24h8v8h-8z"/>
@@ -47,7 +47,7 @@
                 <p>BM.BT.01.01 &amp; BM.BT.01.02 — Lý lịch và danh mục máy móc thiết bị</p>
             </a>
 
-            <a href="/pages/ke-hoach.html" class="feature-card">
+            <a href="/pages/ke-hoach.html" class="feature-card" data-roles="BP_QLTB">
                 <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="10" y="6" width="36" height="48" rx="2"/>
                     <path d="M18 18h20M18 26h20M18 34h12"/>
@@ -57,7 +57,7 @@
                 <p>BM.BT.01.03 — Lập kế hoạch, duyệt, thực hiện và bàn giao bảo dưỡng</p>
             </a>
 
-            <a href="/pages/su-co.html" class="feature-card">
+            <a href="/pages/su-co.html" class="feature-card" data-roles="BP_QLTB,CONG_NHAN">
                 <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
                     <circle cx="32" cy="32" r="22"/>
                     <path d="M32 20v14M32 42v2"/>
@@ -65,6 +65,16 @@
                 <h3>Khắc phục sự cố</h3>
                 <p>BM.BT.01.04 — Phát hiện sự cố, lập phương án, duyệt, sửa chữa và nghiệm thu</p>
             </a>
+
+            <div class="feature-card" data-roles="CONG_NHAN">
+                <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="12" y="12" width="40" height="40" rx="6"/>
+                    <path d="M20 26h24M20 34h24M20 42h12"/>
+                </svg>
+                <h3>Sổ theo dõi bảo dưỡng</h3>
+                <p>BM.BT.01.05 — Xuất sổ theo dõi bảo dưỡng đã hoàn thành</p>
+                <button class="btn btn-primary btn-sm" onclick="openSoTheoDoi()">Tải BM.BT.01.05</button>
+            </div>
         </div>
     </section>
 

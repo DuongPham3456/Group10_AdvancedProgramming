@@ -30,6 +30,9 @@ public class KeHoachController {
     @Autowired
     private KeHoachRepository repository;
 
+    @Autowired
+    private com.tinthanh.prototype.repository.ThietBiRepository thietBiRepository;
+
     @GetMapping
     public List<KeHoachBaoTri> getAll() { return repository.findAll(); }
 
@@ -38,7 +41,14 @@ public class KeHoachController {
 
     @PreAuthorize("hasAuthority('BP_QLTB')")
     @PostMapping
-    public KeHoachBaoTri create(@RequestBody KeHoachBaoTri item) { return repository.save(item); }
+    public KeHoachBaoTri create(@RequestBody KeHoachBaoTri item) {
+        if ((item.getTenThietBi() == null || item.getTenThietBi().isBlank()) && item.getMaThietBi() != null) {
+            thietBiRepository.findAll().stream()
+                .filter(t -> item.getMaThietBi().equalsIgnoreCase(t.getMaSoQuanLy()))
+                .findFirst().ifPresent(t -> item.setTenThietBi(t.getTenThietBi()));
+        }
+        return repository.save(item);
+    }
 
     @PreAuthorize("hasAuthority('BP_QLTB')")
     @PutMapping("/{id}")
@@ -51,15 +61,21 @@ public class KeHoachController {
         item.setNgayBatDau(d.getNgayBatDau());
         item.setNgayKetThuc(d.getNgayKetThuc());
         item.setChuKyNgay(d.getChuKyNgay());
+        item.setMoChuongTrinh(d.getMoChuongTrinh());
         item.setNoiDung(d.getNoiDung());
         return repository.save(item);
     }
 
     @PreAuthorize("hasAuthority('GIAM_DOC')")
     @PutMapping("/{id}/duyet")
-    public KeHoachBaoTri approve(@PathVariable UUID id) {
+    public KeHoachBaoTri approve(@PathVariable UUID id, java.security.Principal principal) {
         KeHoachBaoTri item = find(id);
         item.setTrangThai("Đã duyệt");
+        // set approver info (username stored, frontend can display full name via /api/me)
+        if (principal != null) {
+            item.setNguoiKyDuyet(principal.getName());
+            item.setNgayKyDuyet(java.time.LocalDate.now());
+        }
         return repository.save(item);
     }
 
@@ -83,19 +99,32 @@ public class KeHoachController {
         return repository.save(item);
     }
 
-    @PreAuthorize("hasAnyAuthority('BP_QLTB','CONG_NHAN','QUAN_LY_VUNG')")
+    @PreAuthorize("hasAuthority('BP_QLTB')")
     @PutMapping("/{id}/hoanthanh")
-    public KeHoachBaoTri complete(@PathVariable UUID id, @RequestBody Map<String, String> body) {
+    public KeHoachBaoTri complete(@PathVariable UUID id, @RequestBody Map<String, Object> body) {
         KeHoachBaoTri item = find(id);
         item.setTrangThai("Hoàn thành");
-        item.setKetQuaBaoDuong(body.get("ketQuaBaoDuong"));
+        item.setKetQuaBaoDuong((String) body.get("ketQuaBaoDuong"));
+        item.setPhuTungThayThe((String) body.get("phuTungThayThe"));
+        item.setNhanXetQualityControl((String) body.get("nhanXetQualityControl"));
+        if (body.get("ngayNhanXet") != null) {
+            item.setNgayNhanXet(java.time.LocalDate.parse((String) body.get("ngayNhanXet")));
+        }
+        // Save and keep the completed plan (do not delete)
         return repository.save(item);
     }
 
-    @PreAuthorize("hasAuthority('BP_QLTB')")
+    @PreAuthorize("hasAnyAuthority('BP_QLTB','GIAM_DOC')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id) { repository.delete(find(id)); }
+
+    @PreAuthorize("hasAnyAuthority('BP_QLTB','QUAN_LY_TRAM')")
+    @DeleteMapping("/byMa/{ma}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByMa(@PathVariable String ma) {
+        repository.deleteAllByMaThietBiIgnoreCase(ma);
+    }
 
     private KeHoachBaoTri find(UUID id) {
         return repository.findById(id)

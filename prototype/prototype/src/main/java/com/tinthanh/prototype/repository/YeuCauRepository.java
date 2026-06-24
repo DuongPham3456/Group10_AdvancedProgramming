@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tinthanh.prototype.model.YeuCauBaoTri;
 
-public interface YeuCauRepository extends JpaRepository<YeuCauBaoTri, UUID> {}
+public interface YeuCauRepository extends JpaRepository<YeuCauBaoTri, UUID> {
+	void deleteAllByMaThietBiIgnoreCase(String ma);
+}

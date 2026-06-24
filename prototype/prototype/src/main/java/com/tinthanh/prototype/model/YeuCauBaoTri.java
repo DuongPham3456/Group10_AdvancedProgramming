@@ -55,6 +55,22 @@ public class YeuCauBaoTri {
     private String ketQuaSuaChua;
 
     private String nguoiNghiemThu;
+    
+    @Column(columnDefinition = "TEXT")
+    private String bangKiemTraKyThuat;
+    
+    private LocalDate ngayNghiemThu;
+    
+    private String kichThicTinhHoatDong;
+    
+    private LocalDate ngayBanGiao;
+    
+    private String nguoiBanGiao;
+    
+    private String nguoiTiepNhan;
+    
+    @Column(columnDefinition = "TEXT")
+    private String ghiChuThemBaoTri;
 
     public YeuCauBaoTri() {
         this.trangThai = "Phát hiện";
@@ -96,4 +112,18 @@ public class YeuCauBaoTri {
     public void setKetQuaSuaChua(String ketQuaSuaChua) { this.ketQuaSuaChua = ketQuaSuaChua; }
     public String getNguoiNghiemThu() { return nguoiNghiemThu; }
     public void setNguoiNghiemThu(String nguoiNghiemThu) { this.nguoiNghiemThu = nguoiNghiemThu; }
+    public String getBangKiemTraKyThuat() { return bangKiemTraKyThuat; }
+    public void setBangKiemTraKyThuat(String bangKiemTraKyThuat) { this.bangKiemTraKyThuat = bangKiemTraKyThuat; }
+    public LocalDate getNgayNghiemThu() { return ngayNghiemThu; }
+    public void setNgayNghiemThu(LocalDate ngayNghiemThu) { this.ngayNghiemThu = ngayNghiemThu; }
+    public String getKichThicTinhHoatDong() { return kichThicTinhHoatDong; }
+    public void setKichThicTinhHoatDong(String kichThicTinhHoatDong) { this.kichThicTinhHoatDong = kichThicTinhHoatDong; }
+    public LocalDate getNgayBanGiao() { return ngayBanGiao; }
+    public void setNgayBanGiao(LocalDate ngayBanGiao) { this.ngayBanGiao = ngayBanGiao; }
+    public String getNguoiBanGiao() { return nguoiBanGiao; }
+    public void setNguoiBanGiao(String nguoiBanGiao) { this.nguoiBanGiao = nguoiBanGiao; }
+    public String getNguoiTiepNhan() { return nguoiTiepNhan; }
+    public void setNguoiTiepNhan(String nguoiTiepNhan) { this.nguoiTiepNhan = nguoiTiepNhan; }
+    public String getGhiChuThemBaoTri() { return ghiChuThemBaoTri; }
+    public void setGhiChuThemBaoTri(String ghiChuThemBaoTri) { this.ghiChuThemBaoTri = ghiChuThemBaoTri; }
 }

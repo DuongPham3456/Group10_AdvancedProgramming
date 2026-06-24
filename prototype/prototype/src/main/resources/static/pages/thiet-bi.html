@@ -38,8 +38,8 @@
                 <input id="search" class="search-input" type="text" placeholder="Tìm kiếm theo tên hoặc mã số">
                 <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                     <button class="btn btn-secondary" onclick="load()">Hiển thị tất cả</button>
-                    <button class="btn btn-secondary" onclick="openPdf('/api/pdf/thietbi/danhmuc')">Xuất PDF danh mục (BM.BT.01.02)</button>
-                    <button class="btn btn-secondary" onclick="exportLyLichPrompt()">Xuất PDF lý lịch (BM.BT.01.01)</button>
+                    <button id="btnDanhMucPdf" class="btn btn-secondary" onclick="openPdf('/api/pdf/thietbi/danhmuc')">Xuất PDF danh mục (BM.BT.01.02)</button>
+                    <button id="btnLyLichPdf" class="btn btn-secondary" onclick="exportLyLichPrompt()">Xuất PDF lý lịch (BM.BT.01.01)</button>
                     <button class="btn btn-primary" onclick="searchThietBi()">Tìm kiếm</button>
                 </div>
             </div>
@@ -61,6 +61,10 @@
                 <div class="form-group"><label>Phụ tùng kèm theo</label><input type="text" id="phuTung"></div>
                 <div class="form-group"><label>Tài liệu kèm theo</label><input type="text" id="taiLieu"></div>
                 <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="tinhTrangTiepNhan" placeholder="Ví dụ: 95% hoạt động"></div>
+                <div class="form-group"><label>Tình trạng vệ sinh</label><input type="text" id="tinhTrangVeSinh" placeholder="Ví dụ: Sạch sẽ, hoàn toàn"></div>
+                <div class="form-group"><label>Ngày vệ sinh cuối</label><input type="date" id="ngayVeSinhCuoi"></div>
+                <div class="form-group"><label>Người quản lý trạm</label><input type="text" id="nguoiQuanLyTram"></div>
+                <div class="form-group"><label>Ghi chú bảo trì</label><textarea id="ghiChuBaoTri"></textarea></div>
                 <div class="form-group"><label>Trạng thái</label>
                     <select id="trangThai">
                         <option value="Đang hoạt động">Đang hoạt động</option>
@@ -88,6 +92,10 @@
                 <div class="form-group"><label>Phụ tùng kèm theo</label><input type="text" id="editPhuTung"></div>
                 <div class="form-group"><label>Tài liệu kèm theo</label><input type="text" id="editTaiLieu"></div>
                 <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="editTinhTrangTiepNhan"></div>
+                <div class="form-group"><label>Tình trạng vệ sinh</label><input type="text" id="editTinhTrangVeSinh"></div>
+                <div class="form-group"><label>Ngày vệ sinh cuối</label><input type="date" id="editNgayVeSinhCuoi"></div>
+                <div class="form-group"><label>Người quản lý trạm</label><input type="text" id="editNguoiQuanLyTram"></div>
+                <div class="form-group"><label>Ghi chú bảo trì</label><textarea id="editGhiChuBaoTri"></textarea></div>
                 <div class="form-group"><label>Trạng thái</label>
                     <select id="editTrangThai">
                         <option value="Đang hoạt động">Đang hoạt động</option>
@@ -120,9 +128,12 @@
     <script>
         async function init() {
             await initNav('thiet-bi');
-            if (hasRole('QUAN_LY_TRAM')) {
-                document.getElementById('formCard').style.display = 'block';
-            }
+            if (!isPageAllowed('thiet-bi')) { alert('Bạn không có quyền truy cập trang này.'); window.location.href = '/'; return; }
+
+            const canManage = hasRole('QUAN_LY_TRAM');
+            document.getElementById('formCard').style.display = canManage ? 'block' : 'none';
+            document.getElementById('btnDanhMucPdf').style.display = canManage ? 'inline-flex' : 'none';
+            document.getElementById('btnLyLichPdf').style.display = hasAnyRole('QUAN_LY_TRAM', 'CONG_NHAN') ? 'inline-flex' : 'none';
             load();
         }
 
@@ -146,7 +157,7 @@
                     <td class="actions">
                         <button class="btn btn-secondary btn-sm" onclick="openPdf('/api/pdf/thietbi/lylich/${tb.idThietBi}')">PDF lý lịch</button>
                         ${canManage ? `<button class="btn btn-secondary btn-sm" onclick="editThietBi('${tb.idThietBi}')">Sửa</button>` : ''}
-                        ${canManage ? `<button class="btn btn-danger btn-sm" onclick="deleteThietBi('${tb.idThietBi}')">Xóa</button>` : ''}
+                        ${canManage ? `<button class="btn btn-danger btn-sm" onclick="deleteThietBi('${tb.idThietBi}')">Xóa thiết bị</button>` : ''}
                     </td>
                 </tr>`
             ).join('');
@@ -173,11 +184,16 @@
                 ngayDuaVaoSuDung: getField('ngayDuaVaoSuDung') || null,
                 phuTungKemTheo: getField('phuTung'), taiLieuKemTheo: getField('taiLieu'),
                 tinhTrangTiepNhan: getField('tinhTrangTiepNhan'),
+                tinhTrangVeSinh: getField('tinhTrangVeSinh'),
+                ngayVeSinhCuoi: getField('ngayVeSinhCuoi') || null,
+                nguoiQuanLyTram: getField('nguoiQuanLyTram'),
+                ghiChuBaoTri: getField('ghiChuBaoTri'),
                 trangThaiVanHanh: document.getElementById('trangThai').value
             });
             if (!r) return;
             clearFields(['ten','ma','serial','model','nhaSanXuat','namSanXuat','dacDiem',
-                         'ngayTiepNhan','ngayDuaVaoSuDung','phuTung','taiLieu','tinhTrangTiepNhan']);
+                         'ngayTiepNhan','ngayDuaVaoSuDung','phuTung','taiLieu','tinhTrangTiepNhan',
+                         'tinhTrangVeSinh','ngayVeSinhCuoi','nguoiQuanLyTram','ghiChuBaoTri']);
             load();
         }
 
@@ -197,6 +213,10 @@
             document.getElementById('editPhuTung').value = tb.phuTungKemTheo || '';
             document.getElementById('editTaiLieu').value = tb.taiLieuKemTheo || '';
             document.getElementById('editTinhTrangTiepNhan').value = tb.tinhTrangTiepNhan || '';
+            document.getElementById('editTinhTrangVeSinh').value = tb.tinhTrangVeSinh || '';
+            document.getElementById('editNgayVeSinhCuoi').value = tb.ngayVeSinhCuoi || '';
+            document.getElementById('editNguoiQuanLyTram').value = tb.nguoiQuanLyTram || '';
+            document.getElementById('editGhiChuBaoTri').value = tb.ghiChuBaoTri || '';
             document.getElementById('editTrangThai').value = tb.trangThaiVanHanh || '';
             document.getElementById('editForm').classList.remove('hidden');
         }
@@ -211,6 +231,10 @@
                 ngayDuaVaoSuDung: getField('editNgayDuaVaoSuDung') || null,
                 phuTungKemTheo: getField('editPhuTung'), taiLieuKemTheo: getField('editTaiLieu'),
                 tinhTrangTiepNhan: getField('editTinhTrangTiepNhan'),
+                tinhTrangVeSinh: getField('editTinhTrangVeSinh'),
+                ngayVeSinhCuoi: getField('editNgayVeSinhCuoi') || null,
+                nguoiQuanLyTram: getField('editNguoiQuanLyTram'),
+                ghiChuBaoTri: getField('editGhiChuBaoTri'),
                 trangThaiVanHanh: document.getElementById('editTrangThai').value
             });
             if (!r) return;
@@ -225,6 +249,8 @@
             await apiDelete(`${API.thietBi}/${id}`);
             load();
         }
+
+        
 
         init();
     </script>

@@ -52,6 +52,21 @@ public class KeHoachBaoTri {
 
     @Column(columnDefinition = "TEXT")
     private String ketQuaBaoDuong;
+    
+    @Column(columnDefinition = "TEXT")
+    private String moChuongTrinh;
+    
+    @Column(columnDefinition = "TEXT")
+    private String phuTungThayThe;
+    
+    private String nguoiKyDuyet;
+    
+    private LocalDate ngayKyDuyet;
+    
+    @Column(columnDefinition = "TEXT")
+    private String nhanXetQualityControl;
+    
+    private LocalDate ngayNhanXet;
 
     public KeHoachBaoTri() {
         this.trangThai = "Chờ duyệt";
@@ -87,4 +102,16 @@ public class KeHoachBaoTri {
     public void setNgayThucHienThucTe(LocalDate ngayThucHienThucTe) { this.ngayThucHienThucTe = ngayThucHienThucTe; }
     public String getKetQuaBaoDuong() { return ketQuaBaoDuong; }
     public void setKetQuaBaoDuong(String ketQuaBaoDuong) { this.ketQuaBaoDuong = ketQuaBaoDuong; }
+    public String getMoChuongTrinh() { return moChuongTrinh; }
+    public void setMoChuongTrinh(String moChuongTrinh) { this.moChuongTrinh = moChuongTrinh; }
+    public String getPhuTungThayThe() { return phuTungThayThe; }
+    public void setPhuTungThayThe(String phuTungThayThe) { this.phuTungThayThe = phuTungThayThe; }
+    public String getNguoiKyDuyet() { return nguoiKyDuyet; }
+    public void setNguoiKyDuyet(String nguoiKyDuyet) { this.nguoiKyDuyet = nguoiKyDuyet; }
+    public LocalDate getNgayKyDuyet() { return ngayKyDuyet; }
+    public void setNgayKyDuyet(LocalDate ngayKyDuyet) { this.ngayKyDuyet = ngayKyDuyet; }
+    public String getNhanXetQualityControl() { return nhanXetQualityControl; }
+    public void setNhanXetQualityControl(String nhanXetQualityControl) { this.nhanXetQualityControl = nhanXetQualityControl; }
+    public LocalDate getNgayNhanXet() { return ngayNhanXet; }
+    public void setNgayNhanXet(LocalDate ngayNhanXet) { this.ngayNhanXet = ngayNhanXet; }
 }

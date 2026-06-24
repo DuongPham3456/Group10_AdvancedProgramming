@@ -54,13 +54,17 @@
                 <div class="form-group"><label>Ngày bắt đầu</label><input type="date" id="ngayBatDau"></div>
                 <div class="form-group"><label>Ngày kết thúc</label><input type="date" id="ngayKetThuc"></div>
                 <div class="form-group"><label>Chu kỳ (ngày)</label><input type="number" id="chuKyNgay"></div>
+                <div class="form-group"><label>Mô tả chương trình bảo dưỡng</label><textarea id="moChuongTrinh"></textarea></div>
                 <div class="form-group" style="grid-column:span 2"><label>Nội dung</label><textarea id="noiDung"></textarea></div>
             </div>
             <div class="form-actions"><button class="btn btn-primary" onclick="addKeHoach()">Lưu kế hoạch</button></div>
         </div>
 
         <div class="card">
-            <h2>Danh sách kế hoạch bảo dưỡng</h2>
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:15px;">
+                <h2>Danh sách kế hoạch bảo dưỡng</h2>
+                <button class="btn btn-secondary" onclick="loadSampleData()">📋 Tải ví dụ mẫu</button>
+            </div>
             <div class="table-wrap">
                 <table>
                     <thead><tr>
@@ -108,8 +112,16 @@
         <div class="modal-box">
             <h3>Hoàn thành &amp; Bàn giao</h3>
             <div class="form-group">
+                <label>Phụ tùng thay thế</label>
+                <textarea id="phuTungThayThe" rows="2" placeholder="Ghi chú các phụ tùng được thay thế..."></textarea>
+            </div>
+            <div class="form-group">
                 <label>Kết quả bảo dưỡng <span class="text-danger">*</span></label>
-                <textarea id="ketQuaBaoDuong" rows="4" placeholder="Mô tả kết quả, phụ tùng thay thế, chất lượng máy sau bảo dưỡng..."></textarea>
+                <textarea id="ketQuaBaoDuong" rows="3" placeholder="Mô tả kết quả, chất lượng máy sau bảo dưỡng..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Nhận xét QC</label>
+                <textarea id="nhanXetQualityControl" rows="2" placeholder="Nhận xét về chất lượng bảo dưỡng..."></textarea>
             </div>
             <div class="form-actions">
                 <button class="btn btn-success" onclick="submitHoanThanh()">Xác nhận hoàn thành</button>
@@ -124,6 +136,7 @@
 
         async function init() {
             await initNav('ke-hoach');
+            if (!isPageAllowed('ke-hoach')) { alert('Bạn không có quyền truy cập trang này.'); window.location.href = '/'; return; }
             if (hasRole('BP_QLTB')) {
                 document.getElementById('formCard').style.display = 'block';
             }
@@ -138,20 +151,24 @@
 
         function renderRow(k) {
             const isBp    = hasRole('BP_QLTB');
-            const isGd    = hasRole('GIAM_DOC');
-            const canDone = hasRole('BP_QLTB', 'CONG_NHAN', 'QUAN_LY_VUNG');
+            const isGiamDoc = hasRole('GIAM_DOC');
+            const canDone = hasRole('BP_QLTB');
+            const isQuanLyTram = hasRole('QUAN_LY_TRAM');
 
             let actions = '';
             if (k.trangThai === 'Chờ duyệt') {
-                if (isGd) {
+                if (isGiamDoc) {
                     actions += `<button class="btn btn-success btn-sm" onclick="duyet('${k.id}')">Duyệt</button> `;
                     actions += `<button class="btn btn-danger btn-sm" onclick="openTuChoi('${k.id}')">Từ chối</button>`;
                 }
-                if (isBp) actions += ` <button class="btn btn-danger btn-sm" onclick="xoa('${k.id}')">Xóa</button>`;
+                if (isQuanLyTram) actions += ` <button class="btn btn-danger btn-sm" onclick="deleteDeviceByMa('${k.maThietBi}')">Xóa thiết bị</button>`;
+                if (isBp) actions += ` <button class="btn btn-danger btn-sm" onclick="xoa('${k.id}')">Xóa kế hoạch</button>`;
             } else if (k.trangThai === 'Đã duyệt' && isBp) {
                 actions += `<button class="btn btn-primary btn-sm" onclick="openThucHien('${k.id}')">Bắt đầu thực hiện</button>`;
             } else if (k.trangThai === 'Đang thực hiện' && canDone) {
                 actions += `<button class="btn btn-success btn-sm" onclick="openHoanThanh('${k.id}')">Hoàn thành</button>`;
+            } else if (k.trangThai === 'Hoàn thành' && (isBp || isGiamDoc)) {
+                actions += `<button class="btn btn-danger btn-sm" onclick="xoa('${k.id}')">Xóa kế hoạch</button>`;
             }
 
             const note = (k.trangThai === 'Từ chối' && k.lyDoTuChoi)
@@ -171,6 +188,8 @@
             </tr>`;
         }
 
+        
+
         async function addKeHoach() {
             const r = await apiPost(API.keHoach, {
                 tenKeHoach: getField('tenKeHoach'),
@@ -180,14 +199,16 @@
                 ngayBatDau: getField('ngayBatDau') || null,
                 ngayKetThuc: getField('ngayKetThuc') || null,
                 chuKyNgay: getNumberField('chuKyNgay'),
+                moChuongTrinh: getField('moChuongTrinh'),
                 noiDung: getField('noiDung')
             });
             if (!r) return;
-            clearFields(['tenKeHoach','maThietBi','tenThietBi','ngayBatDau','ngayKetThuc','chuKyNgay','noiDung']);
+            clearFields(['tenKeHoach','maThietBi','tenThietBi','ngayBatDau','ngayKetThuc','chuKyNgay','moChuongTrinh','noiDung']);
             load();
         }
 
         async function duyet(id) {
+            if (!hasRole('GIAM_DOC')) { alert('Chỉ Giám đốc mới được duyệt.'); return; }
             if (!confirm('Phê duyệt kế hoạch này?')) return;
             const r = await apiPut(`${API.keHoach}/${id}/duyet`, {});
             if (r) load();
@@ -227,14 +248,78 @@
         async function submitHoanThanh() {
             const kq = getField('ketQuaBaoDuong');
             if (!kq) { alert('Vui lòng nhập kết quả bảo dưỡng.'); return; }
-            const r = await apiPut(`${API.keHoach}/${actionId}/hoanthanh`, { ketQuaBaoDuong: kq });
+            const r = await apiPut(`${API.keHoach}/${actionId}/hoanthanh`, {
+                phuTungThayThe: getField('phuTungThayThe'),
+                ketQuaBaoDuong: kq,
+                nhanXetQualityControl: getField('nhanXetQualityControl'),
+                ngayNhanXet: new Date().toISOString().split('T')[0]
+            });
             if (r) { closeModal('modalHoanThanh'); load(); }
         }
 
         async function xoa(id) {
+            if (!hasAnyRole('BP_QLTB', 'GIAM_DOC')) { alert('Bạn không có quyền xóa.'); return; }
             if (!confirm('Xóa kế hoạch này?')) return;
-            await apiDelete(`${API.keHoach}/${id}`);
+            const r = await apiDelete(`${API.keHoach}/${id}`);
+            if (r) load();
+        }
+
+        // Dữ liệu mẫu thiết bị
+        const sampleEquipments = [
+            { name: 'Máy phát điện 100kVA', code: 'PGN-001', type: 'Định kỳ', cycle: 30, program: 'Kiểm tra dầu, làm sạch bộ lọc, kiểm tra pin', content: 'Thực hiện kiểm tra kỹ thuật định kỳ theo quy định hàng tháng' },
+            { name: 'Máy nén khí 15HP', code: 'AIR-002', type: 'Định kỳ', cycle: 45, program: 'Xả nước, kiểm tra van tinh, bảo dưỡng đầu nén', content: 'Kiểm tra áp suất, làm sạch bộ lọc, thay dầu bôi trơn' },
+            { name: 'Bơm nước trung tâm 50HP', code: 'PMP-003', type: 'Định kỳ', cycle: 60, program: 'Kiểm tra rò rỉ, bôi trơn vòng bi, kiểm tra áp suất', content: 'Kiểm tra và bảo dưỡng toàn bộ hệ thống bơm' },
+            { name: 'Hệ thống làm lạnh công nghiệp', code: 'COOL-004', type: 'Sửa chữa', cycle: 90, program: 'Vệ sinh tấm lạnh, kiểm tra độ ẩm môi trường', content: 'Kiểm tra và tối ưu hiệu suất làm lạnh' },
+            { name: 'Tủ điều khiển PLC chính', code: 'CTRL-005', type: 'Kiểm tra', cycle: 180, program: 'Kiểm tra điện áp, làm sạch linh kiện, kiểm tra dây đấu', content: 'Kiểm tra toàn bộ hệ thống điều khiển tự động' },
+            { name: 'Máy biến áp 500kVA', code: 'TRF-006', type: 'Định kỳ', cycle: 90, program: 'Đo điện trở isolation, kiểm tra dầu, đo nhiệt độ', content: 'Bảo dưỡng định kỳ theo chuẩn IEC' },
+            { name: 'Động cơ điện 30kW', code: 'MOT-007', type: 'Định kỳ', cycle: 60, program: 'Làm sạch bộ lọc gió, kiểm tra vòng bi, bôi trơn', content: 'Kiểm tra hoạt động, đo dòng điện' },
+            { name: 'Hệ thống cấp nước sạch', code: 'WATER-008', type: 'Kiểm tra', cycle: 45, program: 'Kiểm tra chất lượng nước, thay lõi lọc', content: 'Kiểm tra áp suất, flow, và chất lượng nước' }
+        ];
+
+        function getRandomDate(daysFromNow) {
+            const today = new Date();
+            const date = new Date(today.getTime() + daysFromNow * 24 * 60 * 60 * 1000);
+            return date.toISOString().split('T')[0];
+        }
+
+        async function loadSampleData() {
+            if (!confirm('Tải 4 ví dụ kế hoạch bảo dưỡng ngẫu nhiên?\n\nNhấn OK để tiếp tục')) return;
+            
+            const now = new Date();
+            const samples = [];
+            const selected = [];
+            
+            // Chọn 4 thiết bị ngẫu nhiên
+            while (selected.length < 4 && selected.length < sampleEquipments.length) {
+                const idx = Math.floor(Math.random() * sampleEquipments.length);
+                if (!selected.includes(idx)) selected.push(idx);
+            }
+            
+            for (const idx of selected) {
+                const eq = sampleEquipments[idx];
+                const startDays = Math.floor(Math.random() * 10);
+                const sample = {
+                    tenKeHoach: `[Mẫu] ${eq.name} - Tháng ${now.getMonth() + 1}/${now.getFullYear()}`,
+                    maThietBi: eq.code,
+                    tenThietBi: eq.name,
+                    loaiBaoTri: eq.type,
+                    ngayBatDau: getRandomDate(startDays),
+                    ngayKetThuc: getRandomDate(startDays + eq.cycle),
+                    chuKyNgay: eq.cycle,
+                    moChuongTrinh: eq.program,
+                    noiDung: eq.content,
+                    trangThai: 'Chờ duyệt'
+                };
+                samples.push(sample);
+            }
+            
+            // Tạo các kế hoạch mẫu
+            for (const sample of samples) {
+                await apiPost(API.keHoach, sample);
+            }
+            
             load();
+            alert(`✓ Đã tải ${samples.length} ví dụ kế hoạch bảo dưỡng`);
         }
 
         init();

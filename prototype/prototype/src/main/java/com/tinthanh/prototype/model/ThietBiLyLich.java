@@ -30,6 +30,13 @@ public class ThietBiLyLich {
     private String nhaSanXuat;
     private Integer namSanXuat;
     private String trangThaiVanHanh;
+    
+    @Column(columnDefinition = "TEXT")
+    private String tinhTrangVeSinh;
+    
+    private LocalDate ngayVeSinhCuoi;
+    
+    private String nguoiQuanLyTram;
 
     @Column(columnDefinition = "TEXT")
     private String dacDiem;
@@ -46,6 +53,9 @@ public class ThietBiLyLich {
 
     @Column(columnDefinition = "TEXT")
     private String tinhTrangTiepNhan;
+    
+    @Column(columnDefinition = "TEXT")
+    private String ghiChuBaoTri;
 
     // Getters and Setters
     public UUID getIdThietBi() {
@@ -98,6 +108,38 @@ public class ThietBiLyLich {
 
     public Integer getNamSanXuat() {
         return namSanXuat;
+    }
+
+    public String getTinhTrangVeSinh() {
+        return tinhTrangVeSinh;
+    }
+
+    public void setTinhTrangVeSinh(String tinhTrangVeSinh) {
+        this.tinhTrangVeSinh = tinhTrangVeSinh;
+    }
+
+    public LocalDate getNgayVeSinhCuoi() {
+        return ngayVeSinhCuoi;
+    }
+
+    public void setNgayVeSinhCuoi(LocalDate ngayVeSinhCuoi) {
+        this.ngayVeSinhCuoi = ngayVeSinhCuoi;
+    }
+
+    public String getNguoiQuanLyTram() {
+        return nguoiQuanLyTram;
+    }
+
+    public void setNguoiQuanLyTram(String nguoiQuanLyTram) {
+        this.nguoiQuanLyTram = nguoiQuanLyTram;
+    }
+
+    public String getGhiChuBaoTri() {
+        return ghiChuBaoTri;
+    }
+
+    public void setGhiChuBaoTri(String ghiChuBaoTri) {
+        this.ghiChuBaoTri = ghiChuBaoTri;
     }
 
     public void setNamSanXuat(Integer namSanXuat) {

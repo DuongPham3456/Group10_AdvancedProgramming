@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +29,14 @@ import com.tinthanh.prototype.repository.YeuCauRepository;
 @CrossOrigin("*")
 public class YeuCauController {
 
-    @Autowired
-    private YeuCauRepository repository;
+    private final YeuCauRepository repository;
+    private final com.tinthanh.prototype.repository.ThietBiRepository thietBiRepository;
+    private static final Logger logger = LoggerFactory.getLogger(YeuCauController.class);
+
+    public YeuCauController(YeuCauRepository repository, com.tinthanh.prototype.repository.ThietBiRepository thietBiRepository) {
+        this.repository = repository;
+        this.thietBiRepository = thietBiRepository;
+    }
 
     @GetMapping
     public List<YeuCauBaoTri> getAll() { return repository.findAll(); }
@@ -36,17 +44,37 @@ public class YeuCauController {
     @GetMapping("/{id}")
     public YeuCauBaoTri getById(@PathVariable UUID id) { return find(id); }
 
-    @PreAuthorize("hasAuthority('CONG_NHAN')")
+    @PreAuthorize("hasAnyAuthority('CONG_NHAN','BP_QLTB')")
     @PostMapping
-    public YeuCauBaoTri create(@RequestBody YeuCauBaoTri item) { return repository.save(item); }
+    public YeuCauBaoTri create(@RequestBody YeuCauBaoTri item) {
+        if ((item.getTenThietBi() == null || item.getTenThietBi().isBlank()) && item.getMaThietBi() != null) {
+            // try to fill device name from catalog
+            thietBiRepository.findAll().stream()
+                .filter(t -> item.getMaThietBi().equalsIgnoreCase(t.getMaSoQuanLy()))
+                .findFirst().ifPresent(t -> item.setTenThietBi(t.getTenThietBi()));
+        }
+        return repository.save(item);
+    }
 
-    @PreAuthorize("hasAnyAuthority('BP_QLTB','QUAN_LY_TRAM')")
+    @PreAuthorize("hasAuthority('BP_QLTB')")
     @PutMapping("/{id}/lapkehoach")
-    public YeuCauBaoTri submitPlan(@PathVariable UUID id, @RequestBody Map<String, String> body) {
+    public YeuCauBaoTri submitPlan(@PathVariable UUID id, @RequestBody Map<String, String> body, Authentication auth) {
+        logger.info("submitPlan called for id={} by user={}", id, auth != null ? auth.getName() : "anonymous");
+        logger.debug("submitPlan payload: {}", body);
         YeuCauBaoTri item = find(id);
         item.setTrangThai("Chờ duyệt");
         item.setPhuongAnSuaChua(body.get("phuongAnSuaChua"));
-        return repository.save(item);
+        YeuCauBaoTri saved = repository.save(item);
+        logger.info("submitPlan saved id={} status={}", saved.getId(), saved.getTrangThai());
+        return saved;
+    }
+
+    // Some clients or proxies may send POST instead of PUT; accept POST too and delegate
+    @PreAuthorize("hasAuthority('BP_QLTB')")
+    @PostMapping("/{id}/lapkehoach")
+    public YeuCauBaoTri submitPlanPost(@PathVariable UUID id, @RequestBody Map<String, String> body, Authentication auth) {
+        logger.warn("submitPlanPost (POST) called for id={} by user={}", id, auth != null ? auth.getName() : "anonymous");
+        return submitPlan(id, body, auth);
     }
 
     @PreAuthorize("hasAuthority('GIAM_DOC')")
@@ -66,20 +94,37 @@ public class YeuCauController {
         return repository.save(item);
     }
 
-    @PreAuthorize("hasAnyAuthority('CONG_NHAN','QUAN_LY_TRAM')")
+    @PreAuthorize("hasAnyAuthority('CONG_NHAN','BP_QLTB')")
     @PutMapping("/{id}/nghiemthu")
-    public YeuCauBaoTri accept(@PathVariable UUID id, @RequestBody Map<String, String> body) {
+    public YeuCauBaoTri accept(@PathVariable UUID id, @RequestBody Map<String, Object> body) {
         YeuCauBaoTri item = find(id);
         item.setTrangThai("Hoàn thành");
-        item.setKetQuaSuaChua(body.get("ketQuaSuaChua"));
-        item.setNguoiNghiemThu(body.get("nguoiNghiemThu"));
-        return repository.save(item);
+        item.setKetQuaSuaChua((String) body.get("ketQuaSuaChua"));
+        item.setNguoiNghiemThu((String) body.get("nguoiNghiemThu"));
+        item.setBangKiemTraKyThuat((String) body.get("bangKiemTraKyThuat"));
+        if (body.get("ngayNghiemThu") != null) {
+            item.setNgayNghiemThu(java.time.LocalDate.parse((String) body.get("ngayNghiemThu")));
+        }
+        item.setKichThicTinhHoatDong((String) body.get("kichThicTinhHoatDong"));
+        if (body.get("ngayBanGiao") != null) {
+            item.setNgayBanGiao(java.time.LocalDate.parse((String) body.get("ngayBanGiao")));
+        }
+        item.setNguoiBanGiao((String) body.get("nguoiBanGiao"));
+        item.setNguoiTiepNhan((String) body.get("nguoiTiepNhan"));
+        item.setGhiChuThemBaoTri((String) body.get("ghiChuThemBaoTri"));
+        YeuCauBaoTri saved = repository.save(item);
+        return saved;
     }
 
-    @PreAuthorize("hasAuthority('CONG_NHAN')")
+    @PreAuthorize("hasAnyAuthority('BP_QLTB','GIAM_DOC')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id) { repository.delete(find(id)); }
+
+    @PreAuthorize("hasAnyAuthority('BP_QLTB','QUAN_LY_TRAM')")
+    @DeleteMapping("/byMa/{ma}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByMa(@PathVariable String ma) { repository.deleteAllByMaThietBiIgnoreCase(ma); }
 
     private YeuCauBaoTri find(UUID id) {
         return repository.findById(id)

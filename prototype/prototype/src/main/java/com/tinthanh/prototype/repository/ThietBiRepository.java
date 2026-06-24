@@ -20,4 +20,6 @@ public interface ThietBiRepository extends JpaRepository<ThietBiLyLich, UUID> {
               OR LOWER(t.nhaSanXuat) LIKE LOWER(CONCAT('%', :keyword, '%'))
            """)
     List<ThietBiLyLich> findByKeyword(@Param("keyword") String keyword);
+
+    java.util.Optional<ThietBiLyLich> findByMaSoQuanLyIgnoreCase(String ma);
 }

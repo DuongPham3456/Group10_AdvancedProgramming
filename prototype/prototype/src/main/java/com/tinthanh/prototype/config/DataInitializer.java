@@ -25,9 +25,8 @@ public class DataInitializer {
                 String pw = enc.encode("123456");
                 userRepo.save(makeUser("admin.tram", pw, "Nguyễn Quản Lý Trạm", "QUAN_LY_TRAM"));
                 userRepo.save(makeUser("bp.qltb",    pw, "Trần BP. QLTB",        "BP_QLTB"));
-                userRepo.save(makeUser("giamdoc",    pw, "Lê Giám Đốc",          "GIAM_DOC"));
                 userRepo.save(makeUser("congnhan",   pw, "Phạm Công Nhân",       "CONG_NHAN"));
-                userRepo.save(makeUser("ql.vung",    pw, "Hoàng Quản Lý Vùng",  "QUAN_LY_VUNG"));
+                userRepo.save(makeUser("giamdoc",    pw, "Nguyễn Giám Đốc",      "GIAM_DOC"));
             }
 
             if (thietBiRepo.count() > 0) return;
