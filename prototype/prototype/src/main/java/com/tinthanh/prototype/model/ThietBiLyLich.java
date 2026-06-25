@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -53,9 +54,16 @@ public class ThietBiLyLich {
 
     @Column(columnDefinition = "TEXT")
     private String tinhTrangTiepNhan;
-    
+
     @Column(columnDefinition = "TEXT")
     private String ghiChuBaoTri;
+
+    // Ảnh đính kèm (base64 data URL) — tùy chọn
+    @Lob
+    private String phuTungAnh;
+
+    @Lob
+    private String taiLieuAnh;
 
     // Getters and Setters
     public UUID getIdThietBi() {
@@ -141,6 +149,11 @@ public class ThietBiLyLich {
     public void setGhiChuBaoTri(String ghiChuBaoTri) {
         this.ghiChuBaoTri = ghiChuBaoTri;
     }
+
+    public String getPhuTungAnh() { return phuTungAnh; }
+    public void setPhuTungAnh(String phuTungAnh) { this.phuTungAnh = phuTungAnh; }
+    public String getTaiLieuAnh() { return taiLieuAnh; }
+    public void setTaiLieuAnh(String taiLieuAnh) { this.taiLieuAnh = taiLieuAnh; }
 
     public void setNamSanXuat(Integer namSanXuat) {
         this.namSanXuat = namSanXuat;

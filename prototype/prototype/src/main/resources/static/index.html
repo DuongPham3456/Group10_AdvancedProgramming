@@ -5,7 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Bảo trì thiết bị</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <style>.small-note{font-size:.8rem;color:#888;}</style>
+    <style>
+        .small-note { font-size: .8rem; color: #888; }
+        .catalog-section { padding: 0 20px 8px; max-width: 1180px; margin: 0 auto; }
+        .catalog-heading {
+            display: flex; align-items: baseline; gap: 12px;
+            margin: 28px 0 14px;
+        }
+        .catalog-heading h2 { margin: 0; font-size: 1.25rem; }
+        .catalog-heading span { color: var(--text-secondary); font-size: .9rem; }
+        .form-code {
+            align-self: flex-start;
+            background: var(--accent-soft); color: var(--accent);
+            font-size: .72rem; font-weight: 700; letter-spacing: .03em;
+            padding: 4px 10px; border-radius: 999px;
+        }
+        .feature-card p { margin: 0; color: var(--text-secondary); font-size: .92rem; line-height: 1.5; }
+        .card-cta { margin-top: auto; color: var(--accent); font-weight: 600; font-size: .9rem; }
+        .feature-card[role="button"] { cursor: pointer; }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -21,7 +39,8 @@
             <div class="navbar-links">
                 <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
                 <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
-                <a href="/pages/su-co.html" data-page="su-co">Khắc phục sự cố</a>
+                <a href="/pages/nghiem-thu.html" data-page="nghiem-thu">Nghiệm thu</a>
+                <a href="/pages/so-theo-doi.html" data-page="so-theo-doi">Sổ theo dõi</a>
             </div>
             <div style="display:flex;align-items:center;gap:12px;">
                 <span id="navUser" class="small-note"></span>
@@ -32,51 +51,87 @@
 
     <section class="hero">
         <h1>Quản lý Bảo trì Thiết bị</h1>
-        <p>Hệ thống quản lý theo quy trình BT.01 — Tín Thành Environment Technology</p>
+        <p>Hệ thống quản lý theo quy trình BT.01 — Tín Thành Environment Technology. Chọn một nghiệp vụ hoặc biểu mẫu bên dưới.</p>
     </section>
 
-    <section class="features-section">
+    <!-- Nghiệp vụ -->
+    <section class="catalog-section">
+        <div class="catalog-heading">
+            <h2>Nghiệp vụ</h2>
+            <span>Quản lý vòng đời thiết bị và bảo trì</span>
+        </div>
         <div class="features-grid">
-            <a href="/pages/thiet-bi.html" class="feature-card" data-roles="QUAN_LY_TRAM,CONG_NHAN">
+            <a href="/pages/thiet-bi.html" class="feature-card">
+                <span class="form-code">BM.BT.01.02</span>
                 <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M14 12h8v8h-8zM26 12h8v8h-8zM38 12h8v8h-8z"/>
                     <path d="M14 24h8v8h-8zM26 24h8v8h-8zM38 24h8v8h-8z"/>
                     <path d="M14 36h8v8h-8zM26 36h8v8h-8zM38 36h8v8h-8z"/>
                 </svg>
-                <h3>Danh mục thiết bị</h3>
-                <p>BM.BT.01.01 &amp; BM.BT.01.02 — Lý lịch và danh mục máy móc thiết bị</p>
+                <h3>Danh mục thiết bị, máy móc</h3>
+                <p>Thêm, sửa, tra cứu danh mục máy móc, thiết bị đang quản lý.</p>
+                <span class="card-cta">Mở danh mục →</span>
             </a>
 
-            <a href="/pages/ke-hoach.html" class="feature-card" data-roles="BP_QLTB">
+            <a href="/pages/ke-hoach.html" class="feature-card">
+                <span class="form-code">BM.BT.01.03</span>
                 <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="10" y="6" width="36" height="48" rx="2"/>
                     <path d="M18 18h20M18 26h20M18 34h12"/>
                     <path d="M38 42l14 8v-16l-14 8z"/>
                 </svg>
                 <h3>Bảo dưỡng định kỳ</h3>
-                <p>BM.BT.01.03 — Lập kế hoạch, duyệt, thực hiện và bàn giao bảo dưỡng</p>
+                <p>Lập kế hoạch, duyệt, thực hiện và bàn giao bảo dưỡng theo chu kỳ.</p>
+                <span class="card-cta">Mở kế hoạch →</span>
             </a>
 
-            <a href="/pages/su-co.html" class="feature-card" data-roles="BP_QLTB,CONG_NHAN">
+        </div>
+    </section>
+
+    <!-- Báo cáo & Biểu mẫu -->
+    <section class="catalog-section">
+        <div class="catalog-heading">
+            <h2>Báo cáo &amp; Biểu mẫu</h2>
+            <span>Nhập dữ liệu &amp; xuất PDF theo mẫu BT.01</span>
+        </div>
+        <div class="features-grid">
+            <a href="/pages/thiet-bi.html" class="feature-card">
+                <span class="form-code">BM.BT.01.01</span>
                 <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="32" cy="32" r="22"/>
-                    <path d="M32 20v14M32 42v2"/>
+                    <rect x="14" y="8" width="36" height="48" rx="3"/>
+                    <path d="M22 20h20M22 28h20M22 36h12"/>
+                    <circle cx="32" cy="46" r="3"/>
                 </svg>
-                <h3>Khắc phục sự cố</h3>
-                <p>BM.BT.01.04 — Phát hiện sự cố, lập phương án, duyệt, sửa chữa và nghiệm thu</p>
+                <h3>Lý lịch máy móc thiết bị</h3>
+                <p>Xuất lý lịch PDF cho từng máy móc, thiết bị (nút "PDF lý lịch" trên mỗi dòng).</p>
+                <span class="card-cta">Mở &amp; xuất →</span>
             </a>
 
-            <div class="feature-card" data-roles="CONG_NHAN">
+            <a href="/pages/nghiem-thu.html" class="feature-card">
+                <span class="form-code">BM.BT.01.04</span>
+                <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M16 8h26l10 10v38a2 2 0 01-2 2H16a2 2 0 01-2-2V10a2 2 0 012-2z"/>
+                    <path d="M40 8v12h12M22 36l6 6 12-12"/>
+                </svg>
+                <h3>Biên bản nghiệm thu</h3>
+                <p>Nhập danh sách thiết bị nghiệm thu và xuất biên bản PDF.</p>
+                <span class="card-cta">Mở &amp; nhập →</span>
+            </a>
+
+            <a href="/pages/so-theo-doi.html" class="feature-card">
+                <span class="form-code">BM.BT.01.05</span>
                 <svg class="feature-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="12" y="12" width="40" height="40" rx="6"/>
                     <path d="M20 26h24M20 34h24M20 42h12"/>
                 </svg>
-                <h3>Sổ theo dõi bảo dưỡng</h3>
-                <p>BM.BT.01.05 — Xuất sổ theo dõi bảo dưỡng đã hoàn thành</p>
-                <button class="btn btn-primary btn-sm" onclick="openSoTheoDoi()">Tải BM.BT.01.05</button>
-            </div>
+                <h3>Sổ theo dõi bảo dưỡng máy móc, thiết bị</h3>
+                <p>Nhập nhật ký theo dõi bảo dưỡng từng thiết bị và xuất PDF.</p>
+                <span class="card-cta">Mở &amp; nhập →</span>
+            </a>
         </div>
     </section>
+
+    <div style="height:32px"></div>
 
     <script src="/js/common.js"></script>
     <script>

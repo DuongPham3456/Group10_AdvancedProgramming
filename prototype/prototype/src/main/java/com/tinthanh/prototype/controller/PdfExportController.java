@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.tinthanh.prototype.model.DanhMucThietBi;
 import com.tinthanh.prototype.model.KeHoachBaoTri;
+import com.tinthanh.prototype.model.NghiemThu;
+import com.tinthanh.prototype.model.SoTheoDoi;
 import com.tinthanh.prototype.model.ThietBiLyLich;
-import com.tinthanh.prototype.model.YeuCauBaoTri;
+import com.tinthanh.prototype.repository.DanhMucRepository;
 import com.tinthanh.prototype.repository.KeHoachRepository;
+import com.tinthanh.prototype.repository.NghiemThuRepository;
+import com.tinthanh.prototype.repository.SoTheoDoiRepository;
 import com.tinthanh.prototype.repository.ThietBiRepository;
-import com.tinthanh.prototype.repository.YeuCauRepository;
 import com.tinthanh.prototype.service.PdfService;
 
 @RestController
@@ -34,21 +37,27 @@ public class PdfExportController {
     private final PdfService pdfService;
     private final ThietBiRepository thietBiRepo;
     private final KeHoachRepository keHoachRepo;
-    private final YeuCauRepository yeuCauRepo;
+    private final NghiemThuRepository nghiemThuRepo;
+    private final SoTheoDoiRepository soTheoDoiRepo;
+    private final DanhMucRepository danhMucRepo;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public PdfExportController(PdfService pdfService,
                                ThietBiRepository thietBiRepo,
                                KeHoachRepository keHoachRepo,
-                               YeuCauRepository yeuCauRepo) {
+                               NghiemThuRepository nghiemThuRepo,
+                               SoTheoDoiRepository soTheoDoiRepo,
+                               DanhMucRepository danhMucRepo) {
         this.pdfService = pdfService;
         this.thietBiRepo = thietBiRepo;
         this.keHoachRepo = keHoachRepo;
-        this.yeuCauRepo = yeuCauRepo;
+        this.nghiemThuRepo = nghiemThuRepo;
+        this.soTheoDoiRepo = soTheoDoiRepo;
+        this.danhMucRepo = danhMucRepo;
     }
 
-    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','CONG_NHAN')")
+    // PDF exports are read-only catalog items, open to any authenticated user.
     @GetMapping(value = "/thietbi/lylich/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> exportThietBiLyLich(@PathVariable UUID id) throws IOException {
         ThietBiLyLich tb = thietBiRepo.findById(id)
@@ -56,34 +65,25 @@ public class PdfExportController {
         return pdf(buildLyLichHtml(tb), "BM.BT.01.01_LyLichThietBi.pdf");
     }
 
-    @PreAuthorize("hasAuthority('QUAN_LY_TRAM')")
     @GetMapping(value = "/thietbi/danhmuc", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> exportDanhMucThietBi() throws IOException {
-        return pdf(buildDanhMucHtml(thietBiRepo.findAll()), "BM.BT.01.02_DanhMucThietBi.pdf");
+        return pdf(buildDanhMucHtml(danhMucRepo.findAll()), "BM.BT.01.02_DanhMucThietBi.pdf");
     }
 
-    @PreAuthorize("hasAuthority('BP_QLTB')")
     @GetMapping(value = "/kehoach", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> exportKeHoach() throws IOException {
         return pdf(buildKeHoachHtml(keHoachRepo.findAll()), "BM.BT.01.03_KeHoachBaoDuong.pdf");
     }
 
-    @PreAuthorize("hasAnyAuthority('BP_QLTB','CONG_NHAN')")
+    // 01.04 — biên bản nghiệm thu (dữ liệu nhập từ trang Nghiệm thu)
     @GetMapping(value = "/nghiemthu", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> exportBienBanNghiemThu() throws IOException {
-        List<YeuCauBaoTri> done = yeuCauRepo.findAll().stream()
-                .filter(y -> "Hoàn thành".equals(y.getTrangThai()))
-                .collect(Collectors.toList());
-        return pdf(buildBienBanHtml(done), "BM.BT.01.04_BienBanNghiemThu.pdf");
+        return pdf(buildBienBanHtml(nghiemThuRepo.findAll()), "BM.BT.01.04_BienBanNghiemThu.pdf");
     }
 
-    @PreAuthorize("hasAuthority('CONG_NHAN')")
     @GetMapping(value = "/so-theo-doi", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> exportSoTheoDoi() throws IOException {
-        List<KeHoachBaoTri> done = keHoachRepo.findAll().stream()
-                .filter(k -> "Hoàn thành".equals(k.getTrangThai()))
-                .collect(Collectors.toList());
-        return pdf(buildSoTheoDoiHtml(done), "BM.BT.01.05_SoTheoDoiBaoDuong.pdf");
+        return pdf(buildSoTheoDoiHtml(soTheoDoiRepo.findAll()), "BM.BT.01.05_SoTheoDoiBaoDuong.pdf");
     }
 
     private ResponseEntity<byte[]> pdf(String html, String filename) throws IOException {
@@ -137,19 +137,19 @@ public class PdfExportController {
                 + "</div></body></html>";
     }
 
-    private String buildDanhMucHtml(List<ThietBiLyLich> items) {
+    private String buildDanhMucHtml(List<DanhMucThietBi> items) {
         StringBuilder rows = new StringBuilder();
         int stt = 1;
-        for (ThietBiLyLich tb : items) {
+        for (DanhMucThietBi tb : items) {
             rows.append("<tr>")
                 .append("<td>").append(stt++).append("</td>")
                 .append("<td>").append(safe(tb.getTenThietBi())).append("</td>")
-                .append("<td>").append(safe(tb.getMaSoQuanLy())).append("</td>")
-                .append("<td>1</td>")
-                .append("<td>").append(safe(tb.getNhaSanXuat())).append("</td>")
-                .append("<td>").append(safe(tb.getModelType())).append("</td>")
+                .append("<td>").append(safe(tb.getKyHieu())).append("</td>")
+                .append("<td>").append(tb.getSoLuong() == null ? "" : tb.getSoLuong()).append("</td>")
+                .append("<td>").append(safe(tb.getXuatXu())).append("</td>")
+                .append("<td>").append(safe(tb.getThongSoKyThuat())).append("</td>")
                 .append("<td>").append(tb.getNamSanXuat() == null ? "" : tb.getNamSanXuat()).append("</td>")
-                .append("<td>").append(safe(tb.getTrangThaiVanHanh())).append("</td>")
+                .append("<td>").append(safe(tb.getGhiChu())).append("</td>")
                 .append("</tr>");
         }
         if (items.isEmpty()) {
@@ -166,7 +166,7 @@ public class PdfExportController {
                 + "</style></head><body><div class='page'>"
                 + "<div class='form-code'>BM.BT.01.02</div>"
                 + "<h1>DANH MỤC THIẾT BỊ, MÁY MÓC</h1>"
-                + "<table><thead><tr><th>Stt</th><th>Tên thiết bị</th><th>Ký hiệu/Mã số</th><th>Số lượng</th>"
+                + "<table><thead><tr><th>Stt</th><th>Tên Thiết bị</th><th>Ký hiệu</th><th>Số lượng</th>"
                 + "<th>Xuất xứ</th><th>Thông số kỹ thuật</th><th>Năm sản xuất</th><th>Ghi chú</th></tr></thead>"
                 + "<tbody>" + rows + "</tbody></table>"
                 + "</div></body></html>";
@@ -177,21 +177,25 @@ public class PdfExportController {
         int stt = 1;
         for (KeHoachBaoTri k : items) {
             List<Integer> months = List.of();
-            if (k.getNgayBatDau() != null && k.getNgayKetThuc() != null) {
+            if (k.getNgayBatDau() != null && k.getNgayKetThuc() != null
+                    && !k.getNgayKetThuc().isBefore(k.getNgayBatDau())) {
                 months = k.getNgayBatDau().datesUntil(k.getNgayKetThuc().plusDays(1))
                         .map(d -> d.getMonthValue()).distinct().sorted().collect(Collectors.toList());
             }
+            String code = loaiCode(k.getLoaiBaoTri());
             StringBuilder monthCells = new StringBuilder();
             for (int m = 1; m <= 12; m++) {
-                monthCells.append("<td style='text-align:center;'>").append(months.contains(m) ? "X" : "").append("</td>");
+                monthCells.append("<td style='text-align:center;'>").append(months.contains(m) ? code : "").append("</td>");
             }
+            ThietBiLyLich tb = deviceByMa(k.getMaThietBi());
+            String boPhan = tb != null ? safe(tb.getNguoiQuanLyTram()) : "";
             rows.append("<tr>")
-                .append("<td>").append(stt++).append("</td>")
+                .append("<td style='text-align:center;'>").append(stt++).append("</td>")
                 .append("<td>").append(safe(k.getTenThietBi())).append("</td>")
-                .append("<td>").append(safe(k.getMaThietBi())).append("</td>")
-                .append("<td>").append(safe(k.getLoaiBaoTri())).append("</td>")
+                .append("<td style='text-align:center;'>").append(safe(k.getMaThietBi())).append("</td>")
+                .append("<td>").append(boPhan).append("</td>")
                 .append(monthCells)
-                .append("<td>").append(safe(k.getTrangThai())).append("</td>")
+                .append("<td>").append(safe(k.getLoaiBaoTri())).append("</td>")
                 .append("</tr>");
         }
         if (items.isEmpty()) {
@@ -202,100 +206,98 @@ public class PdfExportController {
                 + "body{font-family:'Noto Sans',sans-serif;font-size:10pt;margin:0;padding:0;}"
                 + ".page{padding:20px;}"
                 + ".form-code{float:right;font-weight:bold;font-size:10pt;}"
-                + "h1{text-align:center;margin:0 0 8px;font-size:13pt;font-weight:bold;}"
-                + ".subtitle{text-align:center;margin:0 0 12px;font-size:11pt;}"
-                + "table{width:100%;border-collapse:collapse;margin-top:8px;}"
-                + "th,td{border:1px solid #000;padding:6px;text-align:center;font-size:9pt;}th{background:#e8e8e8;font-weight:bold;}"
+                + "h1{text-align:center;margin:0 0 4px;font-size:13pt;font-weight:bold;}"
+                + ".subtitle{text-align:center;margin:0 0 8px;font-size:11pt;font-weight:bold;}"
+                + ".legend{margin:0 0 10px;font-size:9pt;}"
+                + ".legend span{margin-right:28px;}"
+                + "table{width:100%;border-collapse:collapse;margin-top:6px;}"
+                + "th,td{border:1px solid #000;padding:6px;font-size:9pt;}th{background:#e8e8e8;font-weight:bold;text-align:center;}"
                 + "</style></head><body><div class='page'>"
                 + "<div class='form-code'>BM.BT.01.03</div>"
                 + "<h1>KẾ HOẠCH BẢO DƯỠNG, HIỆU CHUẨN, KIỂM ĐỊNH</h1>"
-                + "<p class='subtitle'>Năm " + java.time.Year.now().getValue() + "</p>"
-                + "<table><thead><tr><th>Stt</th><th>Tên máy móc, thiết bị</th><th>Mã số</th><th>Loại bảo trì</th>"
-                + "<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>"
-                + "<th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>Ghi chú</th></tr></thead>"
+                + "<p class='subtitle'>NĂM " + java.time.Year.now().getValue() + "</p>"
+                + "<div class='legend'><span>Bảo dưỡng: BD</span><span>Hiệu chuẩn: HC</span>"
+                + "<span>Kiểm định: KĐ</span><span>Đột xuất: ĐX</span></div>"
+                + "<table><thead>"
+                + "<tr><th rowspan='2'>Stt</th><th rowspan='2'>Tên máy móc, thiết bị</th><th rowspan='2'>Mã số</th>"
+                + "<th rowspan='2'>Bộ phận sử dụng</th><th colspan='12'>Tháng thực hiện</th><th rowspan='2'>Ghi chú</th></tr>"
+                + "<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>"
+                + "<th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th></tr></thead>"
                 + "<tbody>" + rows + "</tbody></table></div></body></html>";
     }
 
-    private String buildBienBanHtml(List<YeuCauBaoTri> items) {
+    // 01.04 — biên bản nghiệm thu (dữ liệu nhập từ trang Nghiệm thu)
+    private String buildBienBanHtml(List<NghiemThu> items) {
         StringBuilder rows = new StringBuilder();
         int stt = 1;
-        for (YeuCauBaoTri y : items) {
+        for (NghiemThu n : items) {
             rows.append("<tr>")
-                .append("<td>").append(stt++).append("</td>")
-                .append("<td>").append(safe(y.getMaThietBi())).append("<br/>").append(safe(y.getTenThietBi())).append("</td>")
-                .append("<td style='text-align:center;'>1</td>")
-                .append("<td>").append(safe(y.getKichThicTinhHoatDong())).append("</td>")
-                .append("<td>").append(safe(y.getNguoiNghiemThu())).append("</td>")
-                .append("<td>").append(y.getNgayNghiemThu() == null ? "" : y.getNgayNghiemThu().format(DATE_FORMAT)).append("</td>")
+                .append("<td style='text-align:center;'>").append(stt++).append("</td>")
+                .append("<td>").append(safe(n.getTenThietBi())).append("</td>")
+                .append("<td style='text-align:center;'>").append(n.getSoLuong() == null ? "" : n.getSoLuong()).append("</td>")
+                .append("<td>").append(safe(n.getTinhHinhHoatDong())).append("</td>")
+                .append("<td>").append(safe(n.getGhiChu())).append("</td>")
                 .append("</tr>");
         }
-        if (items.isEmpty()) {
-            rows.append("<tr><td colspan='6' style='text-align:center;'>Chưa có nghiệm thu hoàn thành</td></tr>");
+        for (int i = items.size(); i < 3; i++) {
+            rows.append("<tr><td style='text-align:center;'>").append(i + 1).append("</td><td></td><td></td><td></td><td></td></tr>");
         }
         return "<html><head><meta charset='utf-8'/><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/><style>"
                 + "* { margin: 0; padding: 0; }"
                 + "body{font-family:'Noto Sans',sans-serif;font-size:11pt;margin:0;padding:0;}"
-                + ".page{padding:20px;}"
-                + ".form-code{float:right;font-weight:bold;font-size:10pt;}"
-                + "h1{text-align:center;font-size:14pt;font-weight:bold;margin:0 0 12px;}"
-                + ".intro{margin:12px 0;line-height:1.6;}"
-                + "table{width:100%;border-collapse:collapse;margin-top:12px;}"
-                + "th,td{border:1px solid #000;padding:8px;font-size:10pt;}th{background:#e8e8e8;font-weight:bold;}"
-                + ".sig-table{width:100%;margin-top:32px;border:none;}"
-                + ".sig-table td{border:none;text-align:center;padding:40px 8px 8px;vertical-align:top;}"
+                + ".page{padding:24px;}"
+                + ".form-code{text-align:center;}"
+                + "h1{text-align:center;font-size:14pt;font-weight:bold;margin:0 0 18px;}"
+                + "p{margin:4px 0;line-height:1.5;}"
+                + ".rep{margin-left:30px;}"
+                + "table{width:100%;border-collapse:collapse;margin:12px 0;}"
+                + "th,td{border:1px solid #000;padding:8px;font-size:10pt;}th{background:#e8e8e8;font-weight:bold;text-align:center;}"
+                + ".sig-table{width:100%;border:none;margin-top:28px;}"
+                + ".sig-table td{border:none;text-align:center;font-weight:bold;padding:8px;}"
                 + "</style></head><body><div class='page'>"
-                + "<div class='form-code'>BM.BT.01.04</div><h1>BIÊN BẢN NGHIỆM THU</h1>"
-                + "<p class='intro'>Căn cứ vào biên bản kiểm tra kỹ thuật đã được ký phê duyệt, kết quả nghiệm thu bảo dưỡng như sau:</p>"
-                + "<table><thead><tr><th>TT</th><th>Tên TB sửa chữa – thay thế</th><th>Số lượng</th>"
-                + "<th>Tình hình hoạt động</th><th>Người nghiệm thu</th><th>Ngày nghiệm thu</th></tr></thead>"
+                + "<h1>BIÊN BẢN NGHIỆM THU – BM.BT.01.04</h1>"
+                + "<p>Căn cứ đơn đề nghị vào ngày.......tháng.......năm 20.....</p>"
+                + "<p>Đơn vị đề nghị: .................................................................................................</p>"
+                + "<p>Căn cứ biên bản kiểm tra kỹ thuật và đề xuất đã ký ngày....../ ...../ 20....</p>"
+                + "<p>Sau khi hoàn thành việc sửa chữa, lắp đặt thay thế phụ tùng thiết bị.</p>"
+                + "<p>Hôm nay, ngày.......tháng......năm 20.. ., đại diện gồm có:</p>"
+                + "<p><strong>Đại diện Bên A:</strong></p>"
+                + "<p class='rep'>1. Ông (bà):....................................................Chức vụ................................</p>"
+                + "<p class='rep'>2. Ông (bà):....................................................Chức vụ................................</p>"
+                + "<p><strong>Đại diện Bên B</strong></p>"
+                + "<p class='rep'>1. Ông (bà): ...................................................Chức vụ................................</p>"
+                + "<p class='rep'>2. Ông (bà):....................................................Chức vụ................................</p>"
+                + "<p>Chúng tôi đã cho thiết bị vận hành, tiến hành kiểm tra đánh giá tình hình hoạt động "
+                + "và cùng thống nhất với kết quả nghiệm thu như sau:</p>"
+                + "<table><thead><tr><th>TT</th><th>Tên TB sửa chữa – thay thế, xuất xứ</th>"
+                + "<th>Số lượng</th><th>Tình hình hoạt động</th><th>Ghi chú</th></tr></thead>"
                 + "<tbody>" + rows + "</tbody></table>"
+                + "<p>Các thiết bị trên đạt yêu cầu, đúng chủng loại và bảo hành theo đúng Tem bảo hành "
+                + "của nhà phân phối. Sau khi sửa chữa thay thế hiện nay thiết bị đang hoạt động bình thường.</p>"
+                + "<p>Đại diện hai bên thống nhất ký vào biên bản, Biên bản lập thành 02 bản cùng ngày.</p>"
                 + "<table class='sig-table'><tr>"
-                + "<td><strong>Người thực hiện</strong><br/>..............................</td>"
-                + "<td><strong>Người nghiệm thu</strong><br/>..............................</td>"
-                + "<td><strong>Quản lý trạm</strong><br/>..............................</td>"
-                + "</tr></table>"
+                + "<td>ĐẠI DIỆN BÊN A</td><td>ĐẠI DIỆN BÊN B</td></tr></table>"
                 + "</div></body></html>";
     }
 
-    private String buildSoTheoDoiHtml(List<KeHoachBaoTri> items) {
+    // 01.05 — sổ theo dõi bảo dưỡng (dữ liệu nhập từ trang Sổ theo dõi)
+    private String buildSoTheoDoiHtml(List<SoTheoDoi> items) {
         StringBuilder rows = new StringBuilder();
         int stt = 1;
-        for (KeHoachBaoTri k : items) {
-            // try to find related completed YeuCau (repair) entry for additional handover/times
-            YeuCauBaoTri related = yeuCauRepo.findAll().stream()
-                    .filter(y -> "Hoàn thành".equals(y.getTrangThai()) && k.getMaThietBi() != null
-                            && k.getMaThietBi().equalsIgnoreCase(y.getMaThietBi()))
-                    .max((a, b) -> {
-                        java.time.LocalDate ad = a.getNgayNghiemThu() != null ? a.getNgayNghiemThu() : a.getNgayBanGiao();
-                        java.time.LocalDate bd = b.getNgayNghiemThu() != null ? b.getNgayNghiemThu() : b.getNgayBanGiao();
-                        if (ad == null && bd == null) return 0;
-                        if (ad == null) return -1;
-                        if (bd == null) return 1;
-                        return ad.compareTo(bd);
-                    }).orElse(null);
-
-            String yeuCauNgayPhatHien = related != null && related.getNgayYeuCau() != null ? related.getNgayYeuCau().format(DATE_FORMAT) : "";
-            String yeuCauNgayKetThuc = related != null && related.getNgayNghiemThu() != null ? related.getNgayNghiemThu().format(DATE_FORMAT)
-                    : (related != null && related.getNgayBanGiao() != null ? related.getNgayBanGiao().format(DATE_FORMAT) : "");
-
+        for (SoTheoDoi s : items) {
             rows.append("<tr>")
-                .append("<td>").append(stt++).append("</td>")
-                .append("<td>").append(safe(k.getTenThietBi())).append("</td>")
-                .append("<td>").append(safe(k.getMaThietBi())).append("</td>")
-                .append("<td>").append(safe(k.getLoaiBaoTri())).append("</td>")
-                .append("<td>").append(yeuCauNgayPhatHien).append("</td>")
-                .append("<td>").append(k.getNgayThucHienThucTe() == null ? "" : k.getNgayThucHienThucTe().format(DATE_FORMAT)).append("</td>")
-                .append("<td>").append(yeuCauNgayKetThuc).append("</td>")
-                .append("<td>").append(safe(k.getNguoiThucHien())).append("</td>")
-                .append("<td>").append(related != null ? safe(related.getNguoiBanGiao()) : "").append("</td>")
-                .append("<td>").append(related != null ? safe(related.getNguoiTiepNhan()) : "").append("</td>")
-                .append("<td>").append(safe(k.getDonViThueNgoai())).append("</td>")
-                .append("<td>").append(safe(k.getPhuTungThayThe())).append("</td>")
-                .append("<td>").append(safe(k.getKetQuaBaoDuong())).append("</td>")
+                .append("<td style='text-align:center;'>").append(stt++).append("</td>")
+                .append("<td>").append(safe(s.getTenThietBi())).append("</td>")
+                .append("<td style='text-align:center;'>").append(safe(s.getKyHieu())).append("</td>")
+                .append("<td>").append(safe(s.getThongSoKyThuat())).append("</td>")
+                .append("<td style='text-align:center;'>").append(s.getNamSanXuat() == null ? "" : s.getNamSanXuat()).append("</td>")
+                .append("<td style='text-align:center;'>").append(s.getNgayKiemTra() == null ? "" : s.getNgayKiemTra().format(DATE_FORMAT)).append("</td>")
+                .append("<td>").append(safe(s.getTinhTrang())).append("</td>")
+                .append("<td>").append(safe(s.getGhiChu())).append("</td>")
                 .append("</tr>");
         }
         if (items.isEmpty()) {
-            rows.append("<tr><td colspan='13' style='text-align:center;'>Chưa có bảo dưỡng hoàn thành</td></tr>");
+            rows.append("<tr><td colspan='8' style='text-align:center;'>Chưa có dữ liệu</td></tr>");
         }
         return "<html><head><meta charset='utf-8'/><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/><style>"
                 + "* { margin: 0; padding: 0; }"
@@ -304,13 +306,29 @@ public class PdfExportController {
                 + ".form-code{float:right;font-weight:bold;font-size:10pt;}"
                 + "h1{text-align:center;font-size:13pt;font-weight:bold;margin:0 0 12px;}"
                 + "table{width:100%;border-collapse:collapse;margin-top:12px;}"
-                + "th,td{border:1px solid #000;padding:6px;font-size:8.5pt;}th{background:#e8e8e8;font-weight:bold;}"
+                + "th,td{border:1px solid #000;padding:6px;font-size:8.5pt;}th{background:#e8e8e8;font-weight:bold;text-align:center;}"
+                + ".sig{margin-top:28px;text-align:right;font-weight:bold;padding-right:40px;}"
                 + "</style></head><body><div class='page'>"
-                + "<div class='form-code'>BM.BT.01.05</div>"
-                + "<h1>SỔ THEO DÕI BẢO DƯỠNG MÁY MÓC, THIẾT BỊ</h1>"
-                + "<table><thead><tr><th>Stt</th><th>Tên thiết bị</th><th>Ký hiệu</th><th>Loại bảo trì</th>"
-                + "<th>Ngày phát hiện</th><th>Ngày thực hiện</th><th>Ngày kết thúc</th><th>Người thực hiện</th><th>Người bàn giao</th><th>Người tiếp nhận</th><th>Đơn vị thuê ngoài</th><th>Phụ tùng thay thế</th><th>Kết quả</th></tr></thead>"
-                + "<tbody>" + rows + "</tbody></table></div></body></html>";
+                + "<h1>SỔ THEO DÕI BẢO DƯỠNG MÁY MÓC, THIẾT BỊ - BM.BT.01.05</h1>"
+                + "<table><thead><tr><th>Stt</th><th>Tên Thiết bị</th><th>Ký hiệu</th><th>Thông số kỹ thuật</th>"
+                + "<th>Năm sản xuất</th><th>Ngày kiểm tra</th><th>Tình trạng</th><th>Ghi chú</th></tr></thead>"
+                + "<tbody>" + rows + "</tbody></table>"
+                + "<p class='sig'>Xác nhận người kiểm tra</p>"
+                + "</div></body></html>";
+    }
+
+    private ThietBiLyLich deviceByMa(String ma) {
+        if (ma == null || ma.isBlank()) return null;
+        return thietBiRepo.findByMaSoQuanLyIgnoreCase(ma).orElse(null);
+    }
+
+    private String loaiCode(String loai) {
+        if (loai == null) return "BD";
+        String l = loai.toLowerCase();
+        if (l.contains("hiệu chuẩn")) return "HC";
+        if (l.contains("kiểm định")) return "KĐ";
+        if (l.contains("đột xuất") || l.contains("sửa")) return "ĐX";
+        return "BD";
     }
 
     private String safe(Object value) { return value == null ? "" : value.toString(); }

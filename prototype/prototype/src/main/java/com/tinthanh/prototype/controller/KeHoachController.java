@@ -99,7 +99,8 @@ public class KeHoachController {
         return repository.save(item);
     }
 
-    @PreAuthorize("hasAuthority('BP_QLTB')")
+    // 5.1.2.5 Bàn giao — Công nhân vận hành / Quản lý Vùng
+    @PreAuthorize("hasAnyAuthority('CONG_NHAN','QUAN_LY_VUNG')")
     @PutMapping("/{id}/hoanthanh")
     public KeHoachBaoTri complete(@PathVariable UUID id, @RequestBody Map<String, Object> body) {
         KeHoachBaoTri item = find(id);

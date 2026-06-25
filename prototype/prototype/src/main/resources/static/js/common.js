@@ -1,7 +1,8 @@
 const API = {
-    thietBi: '/api/thietbi',
-    suCo:    '/api/yeucau',
-    keHoach: '/api/kehoach'
+    thietBi:   '/api/thietbi',
+    keHoach:   '/api/kehoach',
+    nghiemThu: '/api/nghiemthu',
+    soTheoDoi: '/api/sotheodoi'
 };
 
 let currentUser = null;
@@ -27,14 +28,11 @@ function hasAnyRole(...roles) {
     return currentUser != null && roles.some(role => currentUser.role === role);
 }
 
+// Everyone sees all modules. Access differences are enforced on the action
+// buttons inside each page (hasRole) and on the backend (@PreAuthorize).
+// ponytail: always-allow; reinstate the role rule here if visibility must vary.
 function isPageAllowed(page) {
-    if (!currentUser) return false;
-    const rule = {
-        'thiet-bi': ['QUAN_LY_TRAM', 'CONG_NHAN'],
-        'ke-hoach': ['BP_QLTB', 'GIAM_DOC'],
-        'su-co':    ['BP_QLTB', 'CONG_NHAN', 'GIAM_DOC']
-    };
-    return !page || !rule[page] || rule[page].includes(currentUser.role);
+    return currentUser != null;
 }
 
 async function doLogout() {
@@ -50,7 +48,8 @@ async function initNav(activePage) {
         'QUAN_LY_TRAM': 'Admin Trạm',
         'BP_QLTB': 'BP QLTB',
         'CONG_NHAN': 'Công nhân',
-        'GIAM_DOC': 'Giám đốc'
+        'GIAM_DOC': 'Giám đốc',
+        'QUAN_LY_VUNG': 'Quản lý Vùng'
     };
     if (el) el.textContent = `${user.hoTen} (${roleNames[user.role] || user.role})`;
 
@@ -173,10 +172,4 @@ async function deleteKeHoachByMa(ma) {
     if (!ma) { alert('Không có mã thiết bị.'); return; }
     if (!confirm('Xóa tất cả kế hoạch liên quan tới ' + ma + ' ?')) return;
     await apiDelete(`${API.keHoach}/byMa/${encodeURIComponent(ma)}`);
-}
-
-async function deleteYeuCauByMa(ma) {
-    if (!ma) { alert('Không có mã thiết bị.'); return; }
-    if (!confirm('Xóa tất cả báo cáo sự cố liên quan tới ' + ma + ' ?')) return;
-    await apiDelete(`${API.suCo}/byMa/${encodeURIComponent(ma)}`);
 }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biên bản nghiệm thu</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>.small-note{font-size:.8rem;color:#888;}</style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
+                <a href="/pages/nghiem-thu.html" data-page="nghiem-thu">Nghiệm thu</a>
+                <a href="/pages/so-theo-doi.html" data-page="so-theo-doi">Sổ theo dõi</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span id="navUser" class="small-note"></span>
+                <button class="btn btn-secondary btn-sm" onclick="doLogout()">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Biên bản nghiệm thu</div>
+            <h1>Biên bản nghiệm thu (BM.BT.01.04)</h1>
+            <p>Nhập danh sách thiết bị nghiệm thu sau khi bảo dưỡng, sửa chữa hoàn thành</p>
+        </div>
+
+        <div class="card" id="formCard">
+            <h2 id="formTitle">Thêm dòng nghiệm thu</h2>
+            <input type="hidden" id="editId">
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Tên TB sửa chữa – thay thế, xuất xứ</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Số lượng</label><input type="number" id="soLuong" value="1"></div>
+                <div class="form-group"><label>Tình hình hoạt động</label><input type="text" id="tinhHinhHoatDong"></div>
+                <div class="form-group"><label>Đơn vị đề nghị</label><input type="text" id="donViDeNghi"></div>
+                <div class="form-group"><label>Người nghiệm thu</label><input type="text" id="nguoiNghiemThu"></div>
+                <div class="form-group"><label>Ngày nghiệm thu</label><input type="date" id="ngayNghiemThu"></div>
+                <div class="form-group" style="grid-column:span 3"><label>Ghi chú</label><textarea id="ghiChu"></textarea></div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="btnSave" onclick="save()">Lưu</button>
+                <button class="btn btn-secondary hidden" id="btnCancel" onclick="cancelEdit()">Hủy</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <h2>Danh sách nghiệm thu</h2>
+                <button class="btn btn-secondary" onclick="openPdf('/api/pdf/nghiemthu')">Xuất PDF BM.BT.01.04</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>TT</th><th>Tên TB sửa chữa – thay thế, xuất xứ</th><th>Số lượng</th>
+                        <th>Tình hình hoạt động</th><th>Người nghiệm thu</th><th>Ngày</th><th>Ghi chú</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function init() {
+            await initNav('nghiem-thu');
+            // 5.1.2.4: chỉ Quản lý Trạm được lập/sửa biên bản nghiệm thu
+            if (!hasRole('QUAN_LY_TRAM')) {
+                document.getElementById('formCard').style.display = 'none';
+            }
+            load();
+        }
+
+        async function load() {
+            const data = await apiGet(API.nghiemThu);
+            if (!data) return;
+            const canManage = hasRole('QUAN_LY_TRAM');
+            let i = 1;
+            document.getElementById('tableBody').innerHTML = data.map(n => `<tr>
+                <td>${i++}</td>
+                <td>${n.tenThietBi || ''}</td>
+                <td>${n.soLuong ?? ''}</td>
+                <td>${n.tinhHinhHoatDong || ''}</td>
+                <td>${n.nguoiNghiemThu || ''}</td>
+                <td>${formatDate(n.ngayNghiemThu)}</td>
+                <td>${n.ghiChu || ''}</td>
+                <td class="actions">
+                    ${canManage ? `<button class="btn btn-secondary btn-sm" onclick='edit(${JSON.stringify(n)})'>Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="del('${n.id}')">Xóa</button>` : ''}
+                </td>
+            </tr>`).join('');
+        }
+
+        function payload() {
+            return {
+                tenThietBi: getField('tenThietBi'),
+                soLuong: getNumberField('soLuong'),
+                tinhHinhHoatDong: getField('tinhHinhHoatDong'),
+                donViDeNghi: getField('donViDeNghi'),
+                nguoiNghiemThu: getField('nguoiNghiemThu'),
+                ngayNghiemThu: getField('ngayNghiemThu') || null,
+                ghiChu: getField('ghiChu')
+            };
+        }
+
+        async function save() {
+            const id = getField('editId');
+            if (!getField('tenThietBi')) { alert('Vui lòng nhập tên thiết bị.'); return; }
+            const r = id ? await apiPut(`${API.nghiemThu}/${id}`, payload())
+                         : await apiPost(API.nghiemThu, payload());
+            if (!r) return;
+            cancelEdit();
+            load();
+        }
+
+        function edit(n) {
+            document.getElementById('editId').value = n.id;
+            document.getElementById('tenThietBi').value = n.tenThietBi || '';
+            document.getElementById('soLuong').value = n.soLuong ?? 1;
+            document.getElementById('tinhHinhHoatDong').value = n.tinhHinhHoatDong || '';
+            document.getElementById('donViDeNghi').value = n.donViDeNghi || '';
+            document.getElementById('nguoiNghiemThu').value = n.nguoiNghiemThu || '';
+            document.getElementById('ngayNghiemThu').value = n.ngayNghiemThu || '';
+            document.getElementById('ghiChu').value = n.ghiChu || '';
+            document.getElementById('formTitle').textContent = 'Sửa dòng nghiệm thu';
+            document.getElementById('btnCancel').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            clearFields(['editId','tenThietBi','tinhHinhHoatDong','donViDeNghi','nguoiNghiemThu','ngayNghiemThu','ghiChu']);
+            document.getElementById('soLuong').value = 1;
+            document.getElementById('formTitle').textContent = 'Thêm dòng nghiệm thu';
+            document.getElementById('btnCancel').classList.add('hidden');
+        }
+
+        async function del(id) {
+            if (!confirm('Xóa dòng này?')) return;
+            const r = await apiDelete(`${API.nghiemThu}/${id}`);
+            if (r) load();
+        }
+
+        init();
+    </script>
+</body>
+</html>

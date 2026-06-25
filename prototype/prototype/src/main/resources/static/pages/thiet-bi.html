@@ -17,7 +17,8 @@
             <div class="navbar-links">
                 <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
                 <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
-                <a href="/pages/su-co.html" data-page="su-co">Khắc phục sự cố</a>
+                <a href="/pages/nghiem-thu.html" data-page="nghiem-thu">Nghiệm thu</a>
+                <a href="/pages/so-theo-doi.html" data-page="so-theo-doi">Sổ theo dõi</a>
             </div>
             <div style="display:flex;align-items:center;gap:12px;">
                 <span id="navUser" class="small-note"></span>
@@ -58,13 +59,22 @@
                 <div class="form-group"><label>Đặc điểm máy móc, thiết bị</label><textarea id="dacDiem"></textarea></div>
                 <div class="form-group"><label>Ngày tiếp nhận</label><input type="date" id="ngayTiepNhan"></div>
                 <div class="form-group"><label>Ngày đưa vào sử dụng</label><input type="date" id="ngayDuaVaoSuDung"></div>
-                <div class="form-group"><label>Phụ tùng kèm theo</label><input type="text" id="phuTung"></div>
-                <div class="form-group"><label>Tài liệu kèm theo</label><input type="text" id="taiLieu"></div>
+                <div class="form-group">
+                    <label>Phụ tùng kèm theo (không bắt buộc)</label>
+                    <input type="text" id="phuTung" placeholder="Ghi chú phụ tùng...">
+                    <input type="file" id="phuTungFile" accept="image/*" style="margin-top:8px">
+                    <input type="hidden" id="phuTungAnh">
+                    <img id="phuTungPreview" style="display:none;max-height:120px;margin-top:8px;border-radius:8px;border:1px solid #ddd">
+                </div>
+                <div class="form-group">
+                    <label>Tài liệu kèm theo (không bắt buộc)</label>
+                    <input type="text" id="taiLieu" placeholder="Ghi chú tài liệu...">
+                    <input type="file" id="taiLieuFile" accept="image/*" style="margin-top:8px">
+                    <input type="hidden" id="taiLieuAnh">
+                    <img id="taiLieuPreview" style="display:none;max-height:120px;margin-top:8px;border-radius:8px;border:1px solid #ddd">
+                </div>
                 <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="tinhTrangTiepNhan" placeholder="Ví dụ: 95% hoạt động"></div>
                 <div class="form-group"><label>Tình trạng vệ sinh</label><input type="text" id="tinhTrangVeSinh" placeholder="Ví dụ: Sạch sẽ, hoàn toàn"></div>
-                <div class="form-group"><label>Ngày vệ sinh cuối</label><input type="date" id="ngayVeSinhCuoi"></div>
-                <div class="form-group"><label>Người quản lý trạm</label><input type="text" id="nguoiQuanLyTram"></div>
-                <div class="form-group"><label>Ghi chú bảo trì</label><textarea id="ghiChuBaoTri"></textarea></div>
                 <div class="form-group"><label>Trạng thái</label>
                     <select id="trangThai">
                         <option value="Đang hoạt động">Đang hoạt động</option>
@@ -89,13 +99,22 @@
                 <div class="form-group"><label>Đặc điểm máy móc, thiết bị</label><textarea id="editDacDiem"></textarea></div>
                 <div class="form-group"><label>Ngày tiếp nhận</label><input type="date" id="editNgayTiepNhan"></div>
                 <div class="form-group"><label>Ngày đưa vào sử dụng</label><input type="date" id="editNgayDuaVaoSuDung"></div>
-                <div class="form-group"><label>Phụ tùng kèm theo</label><input type="text" id="editPhuTung"></div>
-                <div class="form-group"><label>Tài liệu kèm theo</label><input type="text" id="editTaiLieu"></div>
+                <div class="form-group">
+                    <label>Phụ tùng kèm theo (không bắt buộc)</label>
+                    <input type="text" id="editPhuTung" placeholder="Ghi chú phụ tùng...">
+                    <input type="file" id="editPhuTungFile" accept="image/*" style="margin-top:8px">
+                    <input type="hidden" id="editPhuTungAnh">
+                    <img id="editPhuTungPreview" style="display:none;max-height:120px;margin-top:8px;border-radius:8px;border:1px solid #ddd">
+                </div>
+                <div class="form-group">
+                    <label>Tài liệu kèm theo (không bắt buộc)</label>
+                    <input type="text" id="editTaiLieu" placeholder="Ghi chú tài liệu...">
+                    <input type="file" id="editTaiLieuFile" accept="image/*" style="margin-top:8px">
+                    <input type="hidden" id="editTaiLieuAnh">
+                    <img id="editTaiLieuPreview" style="display:none;max-height:120px;margin-top:8px;border-radius:8px;border:1px solid #ddd">
+                </div>
                 <div class="form-group"><label>Tình trạng khi tiếp nhận</label><input type="text" id="editTinhTrangTiepNhan"></div>
                 <div class="form-group"><label>Tình trạng vệ sinh</label><input type="text" id="editTinhTrangVeSinh"></div>
-                <div class="form-group"><label>Ngày vệ sinh cuối</label><input type="date" id="editNgayVeSinhCuoi"></div>
-                <div class="form-group"><label>Người quản lý trạm</label><input type="text" id="editNguoiQuanLyTram"></div>
-                <div class="form-group"><label>Ghi chú bảo trì</label><textarea id="editGhiChuBaoTri"></textarea></div>
                 <div class="form-group"><label>Trạng thái</label>
                     <select id="editTrangThai">
                         <option value="Đang hoạt động">Đang hoạt động</option>
@@ -130,11 +149,37 @@
             await initNav('thiet-bi');
             if (!isPageAllowed('thiet-bi')) { alert('Bạn không có quyền truy cập trang này.'); window.location.href = '/'; return; }
 
-            const canManage = hasRole('QUAN_LY_TRAM');
+            // Danh mục thiết bị: Quản lý Trạm + Giám đốc quản lý; các vai trò khác chỉ xem.
+            const canManage = hasAnyRole('QUAN_LY_TRAM', 'GIAM_DOC');
             document.getElementById('formCard').style.display = canManage ? 'block' : 'none';
-            document.getElementById('btnDanhMucPdf').style.display = canManage ? 'inline-flex' : 'none';
-            document.getElementById('btnLyLichPdf').style.display = hasAnyRole('QUAN_LY_TRAM', 'CONG_NHAN') ? 'inline-flex' : 'none';
+            // Xuất PDF mở cho mọi vai trò.
+            document.getElementById('btnDanhMucPdf').style.display = 'inline-flex';
+            document.getElementById('btnLyLichPdf').style.display = 'inline-flex';
+            // Ảnh tùy chọn cho Phụ tùng / Tài liệu (lưu base64) — cả form thêm và sửa
+            bindImageUpload('phuTungFile', 'phuTungAnh', 'phuTungPreview');
+            bindImageUpload('taiLieuFile', 'taiLieuAnh', 'taiLieuPreview');
+            bindImageUpload('editPhuTungFile', 'editPhuTungAnh', 'editPhuTungPreview');
+            bindImageUpload('editTaiLieuFile', 'editTaiLieuAnh', 'editTaiLieuPreview');
             load();
+        }
+
+        function bindImageUpload(fileId, hiddenId, previewId) {
+            const fi = document.getElementById(fileId);
+            if (!fi) return;
+            fi.addEventListener('change', () => {
+                const file = fi.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = e => setImage(hiddenId, previewId, e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function setImage(hiddenId, previewId, dataUrl) {
+            document.getElementById(hiddenId).value = dataUrl || '';
+            const img = document.getElementById(previewId);
+            if (dataUrl) { img.src = dataUrl; img.style.display = 'block'; }
+            else { img.removeAttribute('src'); img.style.display = 'none'; }
         }
 
         async function load() {
@@ -144,7 +189,7 @@
         }
 
         function renderTable(data) {
-            const canManage = hasRole('QUAN_LY_TRAM');
+            const canManage = hasAnyRole('QUAN_LY_TRAM', 'GIAM_DOC');
             document.getElementById('bangThietBi').innerHTML = data.map(tb =>
                 `<tr>
                     <td>${tb.tenThietBi || ''}</td>
@@ -183,17 +228,20 @@
                 dacDiem: getField('dacDiem'), ngayTiepNhan: getField('ngayTiepNhan') || null,
                 ngayDuaVaoSuDung: getField('ngayDuaVaoSuDung') || null,
                 phuTungKemTheo: getField('phuTung'), taiLieuKemTheo: getField('taiLieu'),
+                phuTungAnh: getField('phuTungAnh') || null,
+                taiLieuAnh: getField('taiLieuAnh') || null,
                 tinhTrangTiepNhan: getField('tinhTrangTiepNhan'),
                 tinhTrangVeSinh: getField('tinhTrangVeSinh'),
-                ngayVeSinhCuoi: getField('ngayVeSinhCuoi') || null,
-                nguoiQuanLyTram: getField('nguoiQuanLyTram'),
-                ghiChuBaoTri: getField('ghiChuBaoTri'),
                 trangThaiVanHanh: document.getElementById('trangThai').value
             });
             if (!r) return;
             clearFields(['ten','ma','serial','model','nhaSanXuat','namSanXuat','dacDiem',
                          'ngayTiepNhan','ngayDuaVaoSuDung','phuTung','taiLieu','tinhTrangTiepNhan',
-                         'tinhTrangVeSinh','ngayVeSinhCuoi','nguoiQuanLyTram','ghiChuBaoTri']);
+                         'tinhTrangVeSinh']);
+            document.getElementById('phuTungFile').value = '';
+            document.getElementById('taiLieuFile').value = '';
+            setImage('phuTungAnh', 'phuTungPreview', '');
+            setImage('taiLieuAnh', 'taiLieuPreview', '');
             load();
         }
 
@@ -212,11 +260,12 @@
             document.getElementById('editNgayDuaVaoSuDung').value = tb.ngayDuaVaoSuDung || '';
             document.getElementById('editPhuTung').value = tb.phuTungKemTheo || '';
             document.getElementById('editTaiLieu').value = tb.taiLieuKemTheo || '';
+            document.getElementById('editPhuTungFile').value = '';
+            document.getElementById('editTaiLieuFile').value = '';
+            setImage('editPhuTungAnh', 'editPhuTungPreview', tb.phuTungAnh || '');
+            setImage('editTaiLieuAnh', 'editTaiLieuPreview', tb.taiLieuAnh || '');
             document.getElementById('editTinhTrangTiepNhan').value = tb.tinhTrangTiepNhan || '';
             document.getElementById('editTinhTrangVeSinh').value = tb.tinhTrangVeSinh || '';
-            document.getElementById('editNgayVeSinhCuoi').value = tb.ngayVeSinhCuoi || '';
-            document.getElementById('editNguoiQuanLyTram').value = tb.nguoiQuanLyTram || '';
-            document.getElementById('editGhiChuBaoTri').value = tb.ghiChuBaoTri || '';
             document.getElementById('editTrangThai').value = tb.trangThaiVanHanh || '';
             document.getElementById('editForm').classList.remove('hidden');
         }
@@ -230,11 +279,10 @@
                 dacDiem: getField('editDacDiem'), ngayTiepNhan: getField('editNgayTiepNhan') || null,
                 ngayDuaVaoSuDung: getField('editNgayDuaVaoSuDung') || null,
                 phuTungKemTheo: getField('editPhuTung'), taiLieuKemTheo: getField('editTaiLieu'),
+                phuTungAnh: getField('editPhuTungAnh') || null,
+                taiLieuAnh: getField('editTaiLieuAnh') || null,
                 tinhTrangTiepNhan: getField('editTinhTrangTiepNhan'),
                 tinhTrangVeSinh: getField('editTinhTrangVeSinh'),
-                ngayVeSinhCuoi: getField('editNgayVeSinhCuoi') || null,
-                nguoiQuanLyTram: getField('editNguoiQuanLyTram'),
-                ghiChuBaoTri: getField('editGhiChuBaoTri'),
                 trangThaiVanHanh: document.getElementById('editTrangThai').value
             });
             if (!r) return;

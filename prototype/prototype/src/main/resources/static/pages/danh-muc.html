@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh mục thiết bị, máy móc</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>.small-note{font-size:.8rem;color:#888;}</style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="24" height="18" rx="2"/><path d="M10 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/><circle cx="16" cy="17" r="4"/></svg>
+                Quản lý Bảo trì thiết bị
+            </a>
+            <div class="navbar-links">
+                <a href="/pages/danh-muc.html" data-page="danh-muc">Danh mục thiết bị</a>
+                <a href="/pages/thiet-bi.html" data-page="thiet-bi">Lý lịch thiết bị</a>
+                <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
+                <a href="/pages/nghiem-thu.html" data-page="nghiem-thu">Nghiệm thu</a>
+                <a href="/pages/so-theo-doi.html" data-page="so-theo-doi">Sổ theo dõi</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span id="navUser" class="small-note"></span>
+                <button class="btn btn-secondary btn-sm" onclick="doLogout()">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb"><a href="/">Trang chủ</a> / Danh mục thiết bị, máy móc</div>
+            <h1>Danh mục thiết bị, máy móc (BM.BT.01.02)</h1>
+            <p>Danh mục máy móc, thiết bị đang quản lý</p>
+        </div>
+
+        <div class="card" id="formCard">
+            <h2 id="formTitle">Thêm thiết bị vào danh mục</h2>
+            <input type="hidden" id="editId">
+            <div class="form-grid cols-3">
+                <div class="form-group"><label>Tên thiết bị</label><input type="text" id="tenThietBi"></div>
+                <div class="form-group"><label>Ký hiệu</label><input type="text" id="kyHieu"></div>
+                <div class="form-group"><label>Số lượng</label><input type="number" id="soLuong" value="1"></div>
+                <div class="form-group"><label>Xuất xứ</label><input type="text" id="xuatXu"></div>
+                <div class="form-group"><label>Năm sản xuất</label><input type="number" id="namSanXuat"></div>
+                <div class="form-group" style="grid-column:span 3"><label>Thông số kỹ thuật</label><textarea id="thongSoKyThuat"></textarea></div>
+                <div class="form-group" style="grid-column:span 3"><label>Ghi chú</label><textarea id="ghiChu"></textarea></div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="btnSave" onclick="save()">Lưu</button>
+                <button class="btn btn-secondary hidden" id="btnCancel" onclick="cancelEdit()">Hủy</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <h2>Danh mục thiết bị</h2>
+                <button class="btn btn-secondary" onclick="openPdf('/api/pdf/thietbi/danhmuc')">Xuất PDF BM.BT.01.02</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Stt</th><th>Tên thiết bị</th><th>Ký hiệu</th><th>Số lượng</th>
+                        <th>Xuất xứ</th><th>Thông số kỹ thuật</th><th>Năm SX</th><th>Ghi chú</th><th>Hành động</th>
+                    </tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        async function init() {
+            await initNav('danh-muc');
+            // Quản lý Trạm + Giám đốc lập danh mục thiết bị
+            if (!hasAnyRole('QUAN_LY_TRAM', 'GIAM_DOC')) {
+                document.getElementById('formCard').style.display = 'none';
+            }
+            load();
+        }
+
+        async function load() {
+            const data = await apiGet(API.danhMuc);
+            if (!data) return;
+            const canManage = hasAnyRole('QUAN_LY_TRAM', 'GIAM_DOC');
+            let i = 1;
+            document.getElementById('tableBody').innerHTML = data.map(s => `<tr>
+                <td>${i++}</td>
+                <td>${s.tenThietBi || ''}</td>
+                <td>${s.kyHieu || ''}</td>
+                <td>${s.soLuong ?? ''}</td>
+                <td>${s.xuatXu || ''}</td>
+                <td>${s.thongSoKyThuat || ''}</td>
+                <td>${s.namSanXuat ?? ''}</td>
+                <td>${s.ghiChu || ''}</td>
+                <td class="actions">
+                    ${canManage ? `<button class="btn btn-secondary btn-sm" onclick='edit(${JSON.stringify(s)})'>Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="del('${s.id}')">Xóa</button>` : ''}
+                </td>
+            </tr>`).join('');
+        }
+
+        function payload() {
+            return {
+                tenThietBi: getField('tenThietBi'),
+                kyHieu: getField('kyHieu'),
+                soLuong: getNumberField('soLuong'),
+                xuatXu: getField('xuatXu'),
+                thongSoKyThuat: getField('thongSoKyThuat'),
+                namSanXuat: getNumberField('namSanXuat'),
+                ghiChu: getField('ghiChu')
+            };
+        }
+
+        async function save() {
+            const id = getField('editId');
+            if (!getField('tenThietBi')) { alert('Vui lòng nhập tên thiết bị.'); return; }
+            const r = id ? await apiPut(`${API.danhMuc}/${id}`, payload())
+                         : await apiPost(API.danhMuc, payload());
+            if (!r) return;
+            cancelEdit();
+            load();
+        }
+
+        function edit(s) {
+            document.getElementById('editId').value = s.id;
+            document.getElementById('tenThietBi').value = s.tenThietBi || '';
+            document.getElementById('kyHieu').value = s.kyHieu || '';
+            document.getElementById('soLuong').value = s.soLuong ?? '';
+            document.getElementById('xuatXu').value = s.xuatXu || '';
+            document.getElementById('thongSoKyThuat').value = s.thongSoKyThuat || '';
+            document.getElementById('namSanXuat').value = s.namSanXuat ?? '';
+            document.getElementById('ghiChu').value = s.ghiChu || '';
+            document.getElementById('formTitle').textContent = 'Sửa thiết bị trong danh mục';
+            document.getElementById('btnCancel').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            clearFields(['editId','tenThietBi','kyHieu','soLuong','xuatXu','thongSoKyThuat','namSanXuat','ghiChu']);
+            document.getElementById('formTitle').textContent = 'Thêm thiết bị vào danh mục';
+            document.getElementById('btnCancel').classList.add('hidden');
+        }
+
+        async function del(id) {
+            if (!confirm('Xóa thiết bị này khỏi danh mục?')) return;
+            const r = await apiDelete(`${API.danhMuc}/${id}`);
+            if (r) load();
+        }
+
+        init();
+    </script>
+</body>
+</html>

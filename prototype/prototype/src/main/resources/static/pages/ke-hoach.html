@@ -23,7 +23,8 @@
             <div class="navbar-links">
                 <a href="/pages/thiet-bi.html" data-page="thiet-bi">Thiết bị</a>
                 <a href="/pages/ke-hoach.html" data-page="ke-hoach">Bảo dưỡng định kỳ</a>
-                <a href="/pages/su-co.html" data-page="su-co">Khắc phục sự cố</a>
+                <a href="/pages/nghiem-thu.html" data-page="nghiem-thu">Nghiệm thu</a>
+                <a href="/pages/so-theo-doi.html" data-page="so-theo-doi">Sổ theo dõi</a>
             </div>
             <div style="display:flex;align-items:center;gap:12px;">
                 <span id="navUser" class="small-note"></span>
@@ -152,8 +153,7 @@
         function renderRow(k) {
             const isBp    = hasRole('BP_QLTB');
             const isGiamDoc = hasRole('GIAM_DOC');
-            const canDone = hasRole('BP_QLTB');
-            const isQuanLyTram = hasRole('QUAN_LY_TRAM');
+            const canDone = hasAnyRole('CONG_NHAN', 'QUAN_LY_VUNG');
 
             let actions = '';
             if (k.trangThai === 'Chờ duyệt') {
@@ -161,13 +161,13 @@
                     actions += `<button class="btn btn-success btn-sm" onclick="duyet('${k.id}')">Duyệt</button> `;
                     actions += `<button class="btn btn-danger btn-sm" onclick="openTuChoi('${k.id}')">Từ chối</button>`;
                 }
-                if (isQuanLyTram) actions += ` <button class="btn btn-danger btn-sm" onclick="deleteDeviceByMa('${k.maThietBi}')">Xóa thiết bị</button>`;
+                if (hasAnyRole('QUAN_LY_TRAM', 'GIAM_DOC')) actions += ` <button class="btn btn-danger btn-sm" onclick="deleteDeviceByMa('${k.maThietBi}')">Xóa thiết bị</button>`;
                 if (isBp) actions += ` <button class="btn btn-danger btn-sm" onclick="xoa('${k.id}')">Xóa kế hoạch</button>`;
             } else if (k.trangThai === 'Đã duyệt' && isBp) {
                 actions += `<button class="btn btn-primary btn-sm" onclick="openThucHien('${k.id}')">Bắt đầu thực hiện</button>`;
             } else if (k.trangThai === 'Đang thực hiện' && canDone) {
                 actions += `<button class="btn btn-success btn-sm" onclick="openHoanThanh('${k.id}')">Hoàn thành</button>`;
-            } else if (k.trangThai === 'Hoàn thành' && (isBp || isGiamDoc)) {
+            } else if (k.trangThai === 'Hoàn thành' && isBp) {
                 actions += `<button class="btn btn-danger btn-sm" onclick="xoa('${k.id}')">Xóa kế hoạch</button>`;
             }
 
@@ -258,7 +258,7 @@
         }
 
         async function xoa(id) {
-            if (!hasAnyRole('BP_QLTB', 'GIAM_DOC')) { alert('Bạn không có quyền xóa.'); return; }
+            if (!hasRole('BP_QLTB')) { alert('Bạn không có quyền xóa.'); return; }
             if (!confirm('Xóa kế hoạch này?')) return;
             const r = await apiDelete(`${API.keHoach}/${id}`);
             if (r) load();

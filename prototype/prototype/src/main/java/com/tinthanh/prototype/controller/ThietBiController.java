@@ -32,31 +32,30 @@ public class ThietBiController {
         this.repository = repository;
     }
 
-    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','CONG_NHAN')")
+    // Reads open to any authenticated user (catalog is visible to all roles).
+    // Writes below stay restricted to QUAN_LY_TRAM.
     @GetMapping
     public List<ThietBiLyLich> getAllThietBi() {
         return repository.findAll();
     }
 
-    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','CONG_NHAN')")
     @GetMapping("/{id}")
     public ThietBiLyLich getThietBiById(@PathVariable UUID id) {
         return findThietBiById(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','CONG_NHAN')")
     @GetMapping("/search")
     public List<ThietBiLyLich> searchThietBi(@RequestParam String keyword) {
         return repository.findByKeyword(keyword);
     }
 
-    @PreAuthorize("hasAuthority('QUAN_LY_TRAM')")
+    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','GIAM_DOC')")
     @PostMapping
     public ThietBiLyLich createThietBi(@RequestBody ThietBiLyLich thietBi) {
         return repository.save(thietBi);
     }
 
-    @PreAuthorize("hasAuthority('QUAN_LY_TRAM')")
+    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','GIAM_DOC')")
     @PutMapping("/{id}")
     public ThietBiLyLich updateThietBi(@PathVariable UUID id, @RequestBody ThietBiLyLich thietBiDetails) {
         ThietBiLyLich thietBi = findThietBiById(id);
@@ -77,10 +76,12 @@ public class ThietBiController {
         thietBi.setNgayVeSinhCuoi(thietBiDetails.getNgayVeSinhCuoi());
         thietBi.setNguoiQuanLyTram(thietBiDetails.getNguoiQuanLyTram());
         thietBi.setGhiChuBaoTri(thietBiDetails.getGhiChuBaoTri());
+        thietBi.setPhuTungAnh(thietBiDetails.getPhuTungAnh());
+        thietBi.setTaiLieuAnh(thietBiDetails.getTaiLieuAnh());
         return repository.save(thietBi);
     }
 
-    @PreAuthorize("hasAuthority('QUAN_LY_TRAM')")
+    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','GIAM_DOC')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteThietBi(@PathVariable UUID id) {
@@ -88,7 +89,7 @@ public class ThietBiController {
         repository.delete(thietBi);
     }
 
-    @PreAuthorize("hasAuthority('QUAN_LY_TRAM')")
+    @PreAuthorize("hasAnyAuthority('QUAN_LY_TRAM','GIAM_DOC')")
     @DeleteMapping("/byMa/{ma}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByMa(@PathVariable String ma) {

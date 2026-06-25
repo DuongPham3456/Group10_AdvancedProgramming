@@ -1,0 +1,367 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.tinthanh:prototype >-----------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.6:run (default-cli) > test-compile @ prototype >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ prototype ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 8 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ prototype ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ prototype ---
+[INFO] skip non existing resourceDirectory D:\Project\AdvancedProgramming\Group10_AdvancedProgramming\prototype\prototype\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ prototype ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.6:run (default-cli) < test-compile @ prototype <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.6:run (default-cli) @ prototype ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-06-25T05:25:33.308+07:00  INFO 7376 --- [           main] c.t.prototype.PrototypeApplication       : Starting PrototypeApplication using Java 26.0.1 with PID 7376 (D:\Project\AdvancedProgramming\Group10_AdvancedProgramming\prototype\prototype\target\classes started by Lenovo in D:\Project\AdvancedProgramming\Group10_AdvancedProgramming\prototype\prototype)
+2026-06-25T05:25:33.310+07:00  INFO 7376 --- [           main] c.t.prototype.PrototypeApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-06-25T05:25:34.172+07:00  INFO 7376 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-25T05:25:34.255+07:00  INFO 7376 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 69 ms. Found 5 JPA repository interfaces.
+2026-06-25T05:25:34.861+07:00  INFO 7376 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 9090 (http)
+2026-06-25T05:25:34.877+07:00  INFO 7376 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-25T05:25:34.877+07:00  INFO 7376 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-06-25T05:25:34.937+07:00  INFO 7376 --- [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1579 ms
+2026-06-25T05:25:35.251+07:00  INFO 7376 --- [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-06-25T05:25:35.299+07:00  INFO 7376 --- [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-06-25T05:25:35.719+07:00  INFO 7376 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-25T05:25:35.752+07:00  INFO 7376 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-25T05:25:36.094+07:00  INFO 7376 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@644e6a8e
+2026-06-25T05:25:36.097+07:00  INFO 7376 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-25T05:25:36.146+07:00  WARN 7376 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-25T05:25:36.165+07:00  INFO 7376 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/quanlybaoduong?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Ho_Chi_Minh]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.44
+	Default catalog/schema: quanlybaoduong/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-25T05:25:37.087+07:00  INFO 7376 --- [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-25T05:25:37.154+07:00  INFO 7376 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-25T05:25:37.242+07:00  INFO 7376 --- [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-25T05:25:38.129+07:00  WARN 7376 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-25T05:25:38.217+07:00  INFO 7376 --- [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2026-06-25T05:25:38.457+07:00  INFO 7376 --- [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-06-25T05:25:38.869+07:00  INFO 7376 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-06-25T05:25:38.960+07:00  INFO 7376 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 9090 (http) with context path '/'
+2026-06-25T05:25:38.969+07:00  INFO 7376 --- [           main] c.t.prototype.PrototypeApplication       : Started PrototypeApplication in 6.081 seconds (process running for 6.501)
+Hibernate: select count(*) from app_users u1_0
+Hibernate: select count(*) from thietbi_lylich tbll1_0
+2026-06-25T05:25:40.249+07:00  INFO 7376 --- [nio-9090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-25T05:25:40.251+07:00  INFO 7376 --- [nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-25T05:25:40.253+07:00  INFO 7376 --- [nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0 where upper(tbll1_0.ma_so_quan_ly)=upper(?)
+2026-06-25T05:39:02.105+07:00  WARN 7376 --- [nio-9090-exec-9] o.a.p.p.font.FileSystemFontProvider      : New fonts found, font cache will be re-built
+2026-06-25T05:39:02.107+07:00  WARN 7376 --- [nio-9090-exec-9] o.a.p.p.font.FileSystemFontProvider      : Building on-disk font cache, this may take a while
+2026-06-25T05:39:03.955+07:00  WARN 7376 --- [nio-9090-exec-9] o.a.p.p.font.FileSystemFontProvider      : Could not load font file: C:\WINDOWS\FONTS\mstmc.ttf
+
+java.io.EOFException
+	at org.apache.fontbox.ttf.TTFDataStream.readUnsignedInt(TTFDataStream.java:151) ~[fontbox-2.0.24.jar:2.0.24]
+	at org.apache.fontbox.ttf.TTFParser.readTableDirectory(TTFParser.java:312) ~[fontbox-2.0.24.jar:2.0.24]
+	at org.apache.fontbox.ttf.TTFParser.parse(TTFParser.java:139) ~[fontbox-2.0.24.jar:2.0.24]
+	at org.apache.fontbox.ttf.TTFParser.parse(TTFParser.java:87) ~[fontbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FileSystemFontProvider.addTrueTypeFont(FileSystemFontProvider.java:657) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FileSystemFontProvider.scanFonts(FileSystemFontProvider.java:379) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FileSystemFontProvider.<init>(FileSystemFontProvider.java:358) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FontMapperImpl$DefaultFontProvider.<clinit>(FontMapperImpl.java:140) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FontMapperImpl.getProvider(FontMapperImpl.java:159) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FontMapperImpl.findFont(FontMapperImpl.java:423) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FontMapperImpl.findFontBoxFont(FontMapperImpl.java:386) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.FontMapperImpl.getFontBoxFont(FontMapperImpl.java:360) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.PDType1Font.<init>(PDType1Font.java:146) ~[pdfbox-2.0.24.jar:2.0.24]
+	at org.apache.pdfbox.pdmodel.font.PDType1Font.<clinit>(PDType1Font.java:79) ~[pdfbox-2.0.24.jar:2.0.24]
+	at com.openhtmltopdf.pdfboxout.fontstore.AbstractFontStore$BuiltinFontStore.addCourier(AbstractFontStore.java:55) ~[openhtmltopdf-pdfbox-1.0.10.jar:na]
+	at com.openhtmltopdf.pdfboxout.fontstore.AbstractFontStore$BuiltinFontStore.createInitialFontMap(AbstractFontStore.java:43) ~[openhtmltopdf-pdfbox-1.0.10.jar:na]
+	at com.openhtmltopdf.pdfboxout.fontstore.AbstractFontStore$BuiltinFontStore.<init>(AbstractFontStore.java:38) ~[openhtmltopdf-pdfbox-1.0.10.jar:na]
+	at com.openhtmltopdf.pdfboxout.PdfBoxFontResolver.<init>(PdfBoxFontResolver.java:82) ~[openhtmltopdf-pdfbox-1.0.10.jar:na]
+	at com.openhtmltopdf.pdfboxout.PdfBoxRenderer.<init>(PdfBoxRenderer.java:204) ~[openhtmltopdf-pdfbox-1.0.10.jar:na]
+	at com.openhtmltopdf.pdfboxout.PdfRendererBuilder.buildPdfRenderer(PdfRendererBuilder.java:69) ~[openhtmltopdf-pdfbox-1.0.10.jar:na]
+	at com.openhtmltopdf.pdfboxout.PdfRendererBuilder.run(PdfRendererBuilder.java:44) ~[openhtmltopdf-pdfbox-1.0.10.jar:na]
+	at com.tinthanh.prototype.service.PdfService.renderPdf(PdfService.java:26) ~[classes/:na]
+	at com.tinthanh.prototype.controller.PdfExportController.pdf(PdfExportController.java:87) ~[classes/:na]
+	at com.tinthanh.prototype.controller.PdfExportController.exportKeHoach(PdfExportController.java:70) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:892) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:633) ~[jakarta.servlet-api-6.1.0.jar:6.1.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.7.jar:7.0.7]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:723) ~[jakarta.servlet-api-6.1.0.jar:6.1.0]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-11.0.21.jar:11.0.21]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:235) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:493) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:354) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:86) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:132) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:181) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:245) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:239) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:110) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:96) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:337) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:228) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:237) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:195) ~[spring-security-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:317) ~[spring-security-config-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:355) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:272) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:110) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.7.jar:7.0.7]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1801) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at java.base/java.lang.Thread.run(Thread.java:1516) ~[na:na]
+
+2026-06-25T05:39:04.608+07:00  WARN 7376 --- [nio-9090-exec-9] o.a.p.p.font.FileSystemFontProvider      : Finished building on-disk font cache, found 357 fonts
+com.openhtmltopdf.load INFO:: SAX XMLReader in use (parser): com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+com.openhtmltopdf.load INFO:: SAX XMLReader in use (parser): com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+com.openhtmltopdf.load INFO:: Loaded document in ~38ms
+com.openhtmltopdf.load INFO:: TIME: parse stylesheets 90ms
+com.openhtmltopdf.match INFO:: media = print
+com.openhtmltopdf.match INFO:: Matcher created with 172 selectors
+com.openhtmltopdf.load INFO:: Loading font(Noto Sans) from InputStream supplier now.
+com.openhtmltopdf.load INFO:: Loading font(Noto Sans) from InputStream supplier now.
+com.openhtmltopdf.general INFO:: Using fast-mode renderer. Prepare to fly.
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select nt1_0.id,nt1_0.don_vi_de_nghi,nt1_0.ghi_chu,nt1_0.ngay_nghiem_thu,nt1_0.nguoi_nghiem_thu,nt1_0.so_luong,nt1_0.ten_thiet_bi,nt1_0.tinh_hinh_hoat_dong from nghiem_thu_bao_tri nt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: insert into thietbi_lylich (dac_diem,ghi_chu_bao_tri,ma_so_quan_ly,model_type,nam_san_xuat,ngay_dua_vao_su_dung,ngay_tiep_nhan,ngay_ve_sinh_cuoi,nguoi_quan_ly_tram,nha_san_xuat,phu_tung_anh,phu_tung_kem_theo,so_serial,tai_lieu_anh,tai_lieu_kem_theo,ten_thiet_bi,tinh_trang_tiep_nhan,tinh_trang_ve_sinh,trang_thai_van_hanh,id_thiet_bi) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+Hibernate: select tbll1_0.id_thiet_bi,tbll1_0.dac_diem,tbll1_0.ghi_chu_bao_tri,tbll1_0.ma_so_quan_ly,tbll1_0.model_type,tbll1_0.nam_san_xuat,tbll1_0.ngay_dua_vao_su_dung,tbll1_0.ngay_tiep_nhan,tbll1_0.ngay_ve_sinh_cuoi,tbll1_0.nguoi_quan_ly_tram,tbll1_0.nha_san_xuat,tbll1_0.phu_tung_anh,tbll1_0.phu_tung_kem_theo,tbll1_0.so_serial,tbll1_0.tai_lieu_anh,tbll1_0.tai_lieu_kem_theo,tbll1_0.ten_thiet_bi,tbll1_0.tinh_trang_tiep_nhan,tbll1_0.tinh_trang_ve_sinh,tbll1_0.trang_thai_van_hanh from thietbi_lylich tbll1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select nt1_0.id,nt1_0.don_vi_de_nghi,nt1_0.ghi_chu,nt1_0.ngay_nghiem_thu,nt1_0.nguoi_nghiem_thu,nt1_0.so_luong,nt1_0.ten_thiet_bi,nt1_0.tinh_hinh_hoat_dong from nghiem_thu_bao_tri nt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: insert into ke_hoach_bao_tri (chu_ky_ngay,don_vi_thue_ngoai,ket_qua_bao_duong,loai_bao_tri,ly_do_tu_choi,ma_thiet_bi,mo_chuong_trinh,ngay_bat_dau,ngay_ket_thuc,ngay_ky_duyet,ngay_nhan_xet,ngay_thuc_hien_thuc_te,nguoi_ky_duyet,nguoi_thuc_hien,nhan_xet_quality_control,noi_dung,phu_tung_thay_the,ten_ke_hoach,ten_thiet_bi,trang_thai,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+Hibernate: insert into ke_hoach_bao_tri (chu_ky_ngay,don_vi_thue_ngoai,ket_qua_bao_duong,loai_bao_tri,ly_do_tu_choi,ma_thiet_bi,mo_chuong_trinh,ngay_bat_dau,ngay_ket_thuc,ngay_ky_duyet,ngay_nhan_xet,ngay_thuc_hien_thuc_te,nguoi_ky_duyet,nguoi_thuc_hien,nhan_xet_quality_control,noi_dung,phu_tung_thay_the,ten_ke_hoach,ten_thiet_bi,trang_thai,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+Hibernate: insert into ke_hoach_bao_tri (chu_ky_ngay,don_vi_thue_ngoai,ket_qua_bao_duong,loai_bao_tri,ly_do_tu_choi,ma_thiet_bi,mo_chuong_trinh,ngay_bat_dau,ngay_ket_thuc,ngay_ky_duyet,ngay_nhan_xet,ngay_thuc_hien_thuc_te,nguoi_ky_duyet,nguoi_thuc_hien,nhan_xet_quality_control,noi_dung,phu_tung_thay_the,ten_ke_hoach,ten_thiet_bi,trang_thai,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+Hibernate: insert into ke_hoach_bao_tri (chu_ky_ngay,don_vi_thue_ngoai,ket_qua_bao_duong,loai_bao_tri,ly_do_tu_choi,ma_thiet_bi,mo_chuong_trinh,ngay_bat_dau,ngay_ket_thuc,ngay_ky_duyet,ngay_nhan_xet,ngay_thuc_hien_thuc_te,nguoi_ky_duyet,nguoi_thuc_hien,nhan_xet_quality_control,noi_dung,phu_tung_thay_the,ten_ke_hoach,ten_thiet_bi,trang_thai,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0 where khbt1_0.id=?
+Hibernate: update ke_hoach_bao_tri set chu_ky_ngay=?,don_vi_thue_ngoai=?,ket_qua_bao_duong=?,loai_bao_tri=?,ly_do_tu_choi=?,ma_thiet_bi=?,mo_chuong_trinh=?,ngay_bat_dau=?,ngay_ket_thuc=?,ngay_ky_duyet=?,ngay_nhan_xet=?,ngay_thuc_hien_thuc_te=?,nguoi_ky_duyet=?,nguoi_thuc_hien=?,nhan_xet_quality_control=?,noi_dung=?,phu_tung_thay_the=?,ten_ke_hoach=?,ten_thiet_bi=?,trang_thai=? where id=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0 where khbt1_0.id=?
+Hibernate: delete from ke_hoach_bao_tri where id=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select std1_0.id,std1_0.ghi_chu,std1_0.ky_hieu,std1_0.nam_san_xuat,std1_0.ngay_kiem_tra,std1_0.ten_thiet_bi,std1_0.thong_so_ky_thuat,std1_0.tinh_trang from so_theo_doi_bao_tri std1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select khbt1_0.id,khbt1_0.chu_ky_ngay,khbt1_0.don_vi_thue_ngoai,khbt1_0.ket_qua_bao_duong,khbt1_0.loai_bao_tri,khbt1_0.ly_do_tu_choi,khbt1_0.ma_thiet_bi,khbt1_0.mo_chuong_trinh,khbt1_0.ngay_bat_dau,khbt1_0.ngay_ket_thuc,khbt1_0.ngay_ky_duyet,khbt1_0.ngay_nhan_xet,khbt1_0.ngay_thuc_hien_thuc_te,khbt1_0.nguoi_ky_duyet,khbt1_0.nguoi_thuc_hien,khbt1_0.nhan_xet_quality_control,khbt1_0.noi_dung,khbt1_0.phu_tung_thay_the,khbt1_0.ten_ke_hoach,khbt1_0.ten_thiet_bi,khbt1_0.trang_thai from ke_hoach_bao_tri khbt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select std1_0.id,std1_0.ghi_chu,std1_0.ky_hieu,std1_0.nam_san_xuat,std1_0.ngay_kiem_tra,std1_0.ten_thiet_bi,std1_0.thong_so_ky_thuat,std1_0.tinh_trang from so_theo_doi_bao_tri std1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select nt1_0.id,nt1_0.don_vi_de_nghi,nt1_0.ghi_chu,nt1_0.ngay_nghiem_thu,nt1_0.nguoi_nghiem_thu,nt1_0.so_luong,nt1_0.ten_thiet_bi,nt1_0.tinh_hinh_hoat_dong from nghiem_thu_bao_tri nt1_0
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select u1_0.id,u1_0.ho_ten,u1_0.password,u1_0.role,u1_0.username from app_users u1_0 where u1_0.username=?
+Hibernate: select nt1_0.id,nt1_0.don_vi_de_nghi,nt1_0.ghi_chu,nt1_0.ngay_nghiem_thu,nt1_0.nguoi_nghiem_thu,nt1_0.so_luong,nt1_0.ten_thiet_bi,nt1_0.tinh_hinh_hoat_dong from nghiem_thu_bao_tri nt1_0
+2026-06-25T07:17:19.019+07:00  WARN 7376 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h41s801ms747µs800ns).
+2026-06-25T07:38:37.456+07:00  WARN 7376 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=21m18s555ms941µs800ns).
